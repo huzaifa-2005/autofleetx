@@ -11,7 +11,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+try:
+    ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+except:
+    # Fallback if ALLOWED_HOSTS env var is not set
+    ALLOWED_HOSTS = [
+        'autofleetx-production-c144.up.railway.app',
+        'localhost',
+        '127.0.0.1',
+    ]
 DEBUG = config("DEBUG", default=False, cast=bool)
 # Application definition
 INSTALLED_APPS = [
