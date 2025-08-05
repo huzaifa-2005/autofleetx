@@ -10,9 +10,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+DEBUG = config("DEBUG", default=False, cast=bool)
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
