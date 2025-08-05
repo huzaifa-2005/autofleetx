@@ -1,3 +1,6 @@
+
+
+.env
 # Python
 *.py[cod]
 __pycache__/
@@ -16,4 +19,4 @@ media/
 .vscode/
 .idea/
 *.swp
-.env
+

@@ -3,7 +3,7 @@ import os
 from decouple import config, Csv
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
-
+import dj_database_url
 
 
 
@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 # Application definition
 INSTALLED_APPS = [
@@ -69,14 +69,7 @@ application = get_wsgi_application()
 application = WhiteNoise(application)
 # PostgreSQL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default='5432'),
-    }
+    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -140,3 +133,5 @@ CSRF_TRUSTED_ORIGINS = ['https://<your-render-app-name>.onrender.com']
 
 # Force HTTPS redirect
 SECURE_SSL_REDIRECT = not DEBUG
+
+CSRF_TRUSTED_ORIGINS = ['https://autofleetx.onrender.com']
