@@ -3,6 +3,9 @@ import os
 from decouple import config, Csv
 import dj_database_url
 from django.core.management.utils import get_random_secret_key
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,6 +39,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    
+    # Cloudinary
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 AUTH_USER_MODEL = 'main_app.CustomUser'
@@ -93,6 +100,23 @@ TIME_ZONE = 'Asia/Karachi'
 USE_I18N = True
 USE_TZ = True
 
+# Cloudinary Configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_CLOUD_NAME'),
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+
+# Storage Backends
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # Static files configuration
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -101,6 +125,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Media files configuration (now handled by Cloudinary)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 os.makedirs(MEDIA_ROOT, exist_ok=True)
@@ -148,5 +173,4 @@ if not DEBUG:
 # CSRF trusted origins - fix the configuration
 CSRF_TRUSTED_ORIGINS = [
     'https://autofleetx-production-c144.up.railway.app',
-    'https://autofleetx.onrender.com'  # Remove if not using Render
 ]
