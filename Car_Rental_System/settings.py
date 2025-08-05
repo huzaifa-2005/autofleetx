@@ -80,7 +80,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Car_Rental_System.wsgi.application'
 
 # PostgreSQL Database Configuration
-DATABASE_URL = config("DATABASE_URL")
+DATABASE_URL = config("DATABASE_URL", default=None)
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 }
