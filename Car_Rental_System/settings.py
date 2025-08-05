@@ -76,8 +76,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Car_Rental_System.settings')
 application = get_wsgi_application()
 application = WhiteNoise(application)
 # PostgreSQL
+
+DATABASE_URL = config("DATABASE_URL")
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    'default': dj_database_url.parse(DATABASE_URL)
 }
 
 AUTH_PASSWORD_VALIDATORS = [
