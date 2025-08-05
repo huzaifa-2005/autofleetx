@@ -1,0 +1,168 @@
+
+body {
+  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.history-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.history-heading {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #003049;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+/* === Table Styling === */
+.rental-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.rental-table thead {
+  background-color: #003049;
+  color: #fff;
+}
+
+.rental-table th,
+.rental-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.rental-table td {
+  color: #212529;
+}
+
+/* === Status Labels === */
+.status-active {
+  color: #28A745;
+  font-weight: bold;
+}
+
+.status-completed {
+  color: gray;
+  font-weight: bold;
+}
+
+.status-early {
+  color: #FCA311;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* === Button === */
+.return-btn {
+  background-color: crimson;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.return-btn:hover {
+  background-color: #c1121f;
+}
+
+/* === No History Message === */
+.no-history {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
+}
+
+/* === Back Link === */
+.back-link {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.back-link a {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.back-link a:hover {
+  color: #0056b3;
+}
+.alert-success {
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: -10px;
+  width: 530px;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+
+  .message {
+  padding: 12px -5px 12px 12px;
+  width: 2rem;
+}
+  .alert-success {
+  
+  border-radius: 6px;
+  text-align: center;
+  margin-top: -10px;
+  width: 2rem;
+}
+  .rental-table thead {
+    display: none;
+  }
+
+  .rental-table,
+  .rental-table tbody,
+  .rental-table tr,
+  .rental-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .rental-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .rental-table td {
+    padding: 12px;
+    text-align: left;
+    position: relative;
+  }
+
+  .rental-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #003049;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .return-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+
+

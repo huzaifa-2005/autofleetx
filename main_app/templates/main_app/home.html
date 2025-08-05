@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoFleetX — Drive Your Journey 🚕</title>
+    <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'styles/theme.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    {% if not user.is_superuser %}
+    {% include 'common-home-navbar.html' %}
+    {% else %}
+    {% include 'main_app/admin/admin-home-navbar.html' %}
+    {% endif %}
+
+    
+    <section class="fleet-section" id="overview-fleets" >
+      <div class="all-messages-div" >
+          {% for message in messages %}    
+                {% if "search-error" in message.tags %}
+                    <div class="alert alert-info">{{ message }}</div> 
+                {% elif "no-cars-found" in message.tags %}
+                    <div class="alert alert-success">{{ message }}</div>             
+                {% endif %}
+          {% endfor %}
+          <script>
+            document.querySelectorAll('.alert').forEach(alert => {
+              const closeBtn = document.createElement('button');
+              closeBtn.innerHTML = '&times;';
+              closeBtn.className = 'alert-close';
+              closeBtn.onclick = () => {
+                alert.style.opacity = '0';
+                setTimeout(() => {
+                  alert.remove();
+                }, 100);
+              };
+              alert.appendChild(closeBtn);
+            });
+          </script>
+      </div>
+      <div class="fleet-header">
+        <h2 class="fleet-title">A fleet that meets your needs</h2>
+        <p class="fleet-subtitle">
+          Take the opportunity to test our all models
+        </p>
+      </div>
+
+      <div class="fleet-container">
+        <div class="vehicle-card">
+          <h3 class="vehicle-title">City car</h3>
+          <p class="vehicle-description">
+            These range from compact and fuel-efficient city to eco-friendly
+            model
+          </p>
+          <a href="{% url 'see_more' vehicle_type='City Car' %}" class="see-more-link">See more</a>
+          <img
+            src="{% static 'images/city-car.png' %}"
+            alt="City Car"
+            class="vehicle-image"
+          />
+        </div>
+                                              
+        <div class="vehicle-card">
+          <h3 class="vehicle-title">Electric</h3>
+          <p class="vehicle-description">
+            Discover our models of electric, hybrid or plug-in vehicles
+          </p>
+          <a href="{% url 'see_more' vehicle_type='Electric' %}" class="see-more-link">See more</a>
+          <img
+            src="{% static 'images/electric-car.png' %}" 
+            alt="Electric Car"
+            class="vehicle-image"
+          />
+        </div>
+
+        <div class="vehicle-card">
+          <h3 class="vehicle-title">Premium</h3>
+          <p class="vehicle-description">
+            You can choose from a wide range of premium vehicles made by
+            legendary manufacturers
+          </p>
+          <a href="{% url 'see_more' vehicle_type='Premium' %}" class="see-more-link">See more</a>
+          <img
+            src="{% static 'images/premium.png' %}"
+            alt="Premium Car"
+            class="vehicle-image"
+          />
+        </div>
+
+        <div class="vehicle-card">
+          <h3 class="vehicle-title">Van & Truck</h3>
+          <p class="vehicle-description">
+            You're looking for a SUV for your business or leisure trip?
+          </p>
+          <a href="{% url 'see_more' vehicle_type='Van OR Truck' %}" class="see-more-link">See more</a>
+
+          <img
+            src="{% static 'images/cargo.png' %}"
+            alt="Van and Truck"
+            class="vehicle-image"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="offers-section" id="offers-homepage">
+      <h2 class="section-title">Our Special rental offers</h2>
+
+      <div class="offers-grid">
+        <!-- Card 1: Exclusive Discount -->
+        <div class="offer-card card-1">
+          <div class="card-1-text-1">Discover Karachi</div>
+          <div class="card-1-text-2">
+            <div class="save-text">Save Up To</div>
+            <div class="percentage">20%</div>
+            <div class="rental-text">On Your Rental</div>
+          </div>
+        </div>
+
+        <!-- Card 2: Renault Electric -->
+        <div class="offer-card card-2">
+          <div class="card-2-text-1">Save nature by our EVs</div>
+        </div>
+
+        <!-- Card 3: Discover Italy -->
+        <div class="offer-card card-3">
+          <div class="card-3-text-1">
+           <div class="elegance-text">Ride With Elegance with</div>
+           <div class="elegance-text">AutoFleetX</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mobile-app-section">
+      <div class="container">
+        <div class="mobile-app-content">
+          <div class="phone-image-container">
+            <div class="phone-mockup">
+              <div class="phone-screen">
+                <img
+                  src="{% static 'images/app-promo.png' %}"
+                  alt="Car Rental Mobile App Interface"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="app-info">
+            <div class="platform-tags">
+              <span class="platform-tag">Android</span>
+              <span class="platform-tag">iOS</span>
+            </div>
+
+            <h2 class="app-title">Car and van hire will be easy soon!</h2>
+
+            <p class="app-description">
+              Your car rental will be just a few taps away with the new
+              AutoFleetX iOS app! Dont forget to download the AutoFleetX mobile
+              app and avail exclusive discounts in the upcoming days!
+            </p>
+
+            <div class="download-section">
+              <a class="download-button"
+                >Soon We'll launch the AutoFleetX APP</a
+              >
+
+              <div class="store-buttons">
+                <a class="store-btn">
+                  <img
+                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                    alt="Download on App Store"
+                  />
+                </a>
+                <a class="store-btn">
+                  <img
+                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                    alt="Get it on Google Play"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      
+      <div class="footer-container">
+        <div class="footer-content">
+          <!-- Brand Section -->
+          <div class="footer-section brand-section">
+            <div class="logo">AutoFleetX</div>
+            <p>
+              Your premium car rental solution. Experience luxury, reliability,
+              and exceptional service with our diverse fleet of vehicles.
+            </p>
+            <div class="social-links">
+              <a aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              {% if user.is_superuser %}
+              <li><a href="{% url 'admin:index' %}">Admin Panel</a></li>  
+              <li><a href="{% url 'admin_customer_report' %}#customer-report-section">Customer Report</a></li>
+              <li><a href="{% url 'admin_dashboard' %}#admin-dashboard-section">Admin Dashboard</a></li>
+              <li><a href="{% url 'admin_contact_messages' %}#user-messages-section">User Messages</a></li>       
+              {% else %}
+              <li><a href="{% url 'home'  %}">Home</a></li>   
+              <li><a href="{% url 'home'  %}#overview-fleets">Overview</a></li>   
+              <li><a href="{% url 'contact_us' %}#contact-form">Contact US</a></li>
+              <li><a href="{% url 'all-cars' scroll_to_section=1 %}">Our Fleets</a></li>
+              {% endif %}
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Services</h3>
+            <ul class="footer-links">
+              <li><a href="{% url 'services' %}#luxury-cars">Luxury Cars</a></li>
+              <li><a href="{% url 'services' %}#business-rentals">Business Rentals</a></li>
+              <li><a href="{% url 'services' %}#long-term-lease">Long-term Lease</a></li>
+              {% if user.is_superuser %}
+              <li><a href="{% url 'home' %}#offers-homepage">Special Offers</a></li>
+              {% endif %}
+            </ul>
+              {% if not user.is_superuser %}
+              <div class="newsletter">
+                <h3>Newsletter</h3>
+                <p style="color: #cccccc; margin-bottom: 10px">
+                  Subscribe for exclusive deals and updates
+                </p>
+                <form class="newsletter-form">
+                  <input type="email" placeholder="Enter your email" required />
+                  <button type="submit">Subscribe</button>
+                </form>
+              </div>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 AutoFleetX. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="{% url 'services' %}#privacy-policy">Privacy Policy</a>
+            <a href="{% url 'services' %}#terms-of-service">Terms of Service</a>
+            <a href="{% url 'services' %}#cookie-policy">Cookie Policy</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

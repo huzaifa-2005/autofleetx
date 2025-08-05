@@ -1,0 +1,145 @@
+/* customer-report.css */
+
+body {
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.report-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.report-heading {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #003049;
+    font-size: 28px;
+    font-weight: 600;
+}
+.report-table-wrapper {
+    transition: all 0.3s ease;
+    border-left: 0 solid transparent;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.20);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.report-table-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid rgb(192, 190, 190);
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.20);
+    
+}
+
+.report-table thead {
+    background-color: #003049;
+    color: #ffffff;
+}
+
+.report-table th,
+.report-table td {
+    padding: 14px 12px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.report-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    background-color: #fefefe;
+}
+
+.report-table tbody tr:hover {
+    background-color: #f4f4f4;
+}
+
+.button-wrapper {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.download-btn {
+    background-color: #fca311;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: #e18d0d;
+}
+
+.no-data-text {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}
+
+.back-link-wrapper {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-link {
+    color: #003049;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #00223d;
+}
+@media (max-width: 768px) {
+  .report-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .report-table {
+    width: 100%;
+    min-width: 600px; /* or higher if your table is wide */
+    border-collapse: collapse;
+  }
+
+  .report-table th,
+  .report-table td {
+    white-space: nowrap;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .button-wrapper {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .download-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .back-link-wrapper {
+    text-align: center;
+    margin-top: 16px;
+  }
+}

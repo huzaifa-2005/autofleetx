@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'styles/admin-home-navbar.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+
+  </head>
+  <body>
+    <header class="navbar">
+        <div class="navbar-content">
+          <div class="left-content">
+            {% if user.is_superuser %}
+            <div class="autofleetX-top" ><div class="landing-top-text">AutoFleetX | Admin Console</div></div>
+            <div class="admin-hero-line">
+              Admin Interface – AutoFleetX Business Control
+            </div>
+            {% else %}
+            <div class="logo">AutofleetX</div>
+            <div class="hero-line">
+              Business rentals with AutoFleetX: Subscribe now
+            </div>
+            {% endif %}
+          </div>
+          <div class="right-content">
+            <button class="hamburger" onclick="toggleMobileMenu()" type="button" aria-label="Toggle menu">
+              <i class="fas fa-bars"></i>
+            </button>
+
+
+            <div class="nav-buttons" id="mobileMenu" >
+              <button onclick="confirmLogout()"  ><i class="fas fa-right-to-bracket"></i> Logout</button>
+              <button onclick="window.location.href='{% url 'admin_contact_messages' %}#user-messages-section'"> <i class="fas fa-comment-dots"></i>User Messages</button>
+              <button onclick="window.location.href='{% url 'admin:index' %}'">📈Admin Panel</button>
+            </div>
+          </div>
+        </div>
+    </header>  
+    <button class="our-fleets-btn" onclick="window.location.href='{% url 'all-cars' scroll_to_section=0 %}'"><i class="fas fa-bars"></i> Our Fleets</button>
+    {% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+    {% endif %}
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Logout</button>
+          </form>
+          <button type="button" onclick="closeLogoutModal()" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function confirmLogout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
+
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('show');
+      }
+    </script>
+
+ 
+  </body>
+</html>

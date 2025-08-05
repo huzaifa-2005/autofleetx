@@ -1,0 +1,19 @@
+# Python
+*.py[cod]
+__pycache__/
+
+# Virtual environment
+venv/
+
+# SQLite (no longer needed)
+db.sqlite3
+
+# Static & Media (optional for local use; keep if you deploy differently)
+
+media/
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+.env

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Your Profile — AutoFleetX 🚕{% endblock %}</title>
+
+{% block head %}
+<link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" 
+integrity="sha512-AUvo/r1Ik0Ft3M1/NbyMeKXbFT9B5WS7gCZvMgxGL3iQFbJ3OZ6ev5mxk3Ieg9HL2L5kIq1kBtZszO1DxM8N2Q==" 
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if user.is_superuser %}
+    {% include 'main_app/admin/admin-search-form.html' %}
+{% else %}
+    {% include 'common-search-form.html' %}
+{% endif %}
+
+<section id="profile-section">
+  <br>
+  <div class="profile-container">
+    <div class="message">
+      {% if messages %}
+        {% for message in messages %}
+          {% if "address-updated" in message.tags or "amount-added-to-wallet" in message.tags or "returned-by-user" in message.tags %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% elif not user.address or "address-required" in message.tags or "address-empty" in message.tags %}
+               <div class="alert alert-warning">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+    <br>
+    <h2 class="profile-heading">
+      {% if user.is_superuser %}Admin Profile{% else %}My Profile{% endif %}
+    </h2>
+
+    
+
+    <div class="profile-info">
+      {% if user.is_superuser %}
+        <div class="profile-row"><span class="label">Admin</span><span class="value"><span class="label-colon">:</span>{{ user.username }}</span></div>
+        <div class="profile-row"><span class="label">Balance</span><span class="value"><span class="label-colon">:</span>{{ user.balance }}</span></div>
+      {% else %}
+        <div class="profile-row"><span class="label">Username</span><span class="value"><span class="label-colon">:</span>{{ user.username }}</span></div>
+        <div class="profile-row"><span class="label">First Name</span><span class="value"><span class="label-colon">:</span>{{ user.first_name }}</span></div>
+        <div class="profile-row"><span class="label">Last Name</span><span class="value"><span class="label-colon">:</span>{{ user.last_name }}</span></div>
+        <div class="profile-row"><span class="label">Balance</span><span class="value"><span class="label-colon">:</span>{{ user.balance }}</span></div>
+      {% endif %}
+    </div>
+
+    {% if not user.is_superuser %}
+    <form method="POST" action="{% url 'profile' %}" class="address-form">
+      {% csrf_token %}
+      <label for="id_address" class="address-heading">Your Address</label>
+      {{ profile_form.address }}
+      <button type="submit" name="address_submit" class="address user-btn-primary">
+        <i class="fas fa-save"></i> Save Address
+      </button>
+    </form>
+    {% endif %}
+
+    <hr class="divider">
+
+    <h3 class="section-subheading">Add Money to Balance</h3>
+
+    <form method="POST" class="balance-form" action="{% url 'profile' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if user.is_superuser %}
+        <div class="form-submit">
+          <button name="balance_submit" type="submit" class="btn btn-primary">
+            <i class="fas fa-wallet"></i> Add Balance
+          </button>
+        </div>
+      {% else %}
+        <div class="user-form-submit">
+          <button name="balance_submit" type="submit" class="btn user-btn-primary">
+            <i class="fas fa-wallet"></i> Add Balance
+          </button>
+        </div>
+      {% endif %}
+    </form>
+
+    {% if user.is_superuser %}
+    <div class="admin-back-to-home">
+      <a href="{% url 'home' %}" class="admin-btn admin-back-success">
+        <i class="fas fa-arrow-left"></i> Home
+      </a>
+    </div>
+    {% else %}
+    <div class="user-back-to-home">
+      <a href="{% url 'home' %}" class="user-btn user-back-success">
+        <i class="fas fa-arrow-left"></i> Home
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Connect With Us — AutoFleetX 🚕{% endblock %}</title>
+
+{% block head %}
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/contact_us.css' %}">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+{% endblock %}
+{% block content %}
+
+{% if not user.is_superuser %}
+{% include 'common-search-form.html' %}
+{% endif %}
+<section id="contact-form">
+<div class="contact-container">
+    {% if request.GET.success %}
+    <br>
+    <div class="message">
+    {% for message in messages %} 
+      {% if "msg-sent" in message.tags %}
+      <div class="alert alert-success"><i class="fas fa-check-circle"></i>  {{ message }}</div>
+      {% endif %}
+    {% endfor %}  
+    </div>
+    {% endif %}  
+    <br>
+    
+    <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+    <p>
+      If you have any questions, suggestions, or need help, feel free to reach
+      out to us using the form below.
+    </p>
+
+    <form method="post" class="contact-form">
+      {% csrf_token %}
+
+      <label for="name"><i class="fas fa-user"></i> Your Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        placeholder="John Doe"
+      />
+
+      <label for="email"><i class="fas fa-at"></i> Your Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="john@example.com"
+        value="{{ user.email|default_if_none:'' }}"
+      />
+
+      <label for="message"><i class="fas fa-comment-dots"></i> Message</label>
+      <textarea
+        id="message"
+        name="message"
+        rows="5"
+        required
+        placeholder="How can we help you?"
+      ></textarea>
+
+      <button type="submit">
+        <i class="fas fa-paper-plane"></i> Send Message
+      </button>
+    </form>
+    <br>
+    
+
+
+
+</div>
+<div class="user-back-to-home">
+                <a href="{% url 'home' %}" class="btn user-back-success">
+                    <i class="fas fa-arrow-left"></i> Home
+                </a>
+</div>
+</section>
+
+{% endblock %}
+

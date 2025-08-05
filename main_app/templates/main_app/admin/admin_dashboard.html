@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %} Dashboard — AutoFleetX Control Center 🚕{% endblock %}</title>
+{% block head %}  
+<link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-AUvo/r1Ik0Ft3M1/NbyMeKXbFT9B5WS7gCZvMgxGL3iQFbJ3OZ6ev5mxk3Ieg9HL2L5kIq1kBtZszO1DxM8N2Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}  
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/admin-dashboard.css' %}">
+{% endblock %}  
+
+
+{% block content %}
+{% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+{% endif %}
+
+
+    
+<section id="admin-dashboard-section" >
+    <div class="dashboard-container">
+        <div class="message" > 
+        {% if messages %}
+            {% for message in messages %}
+                {% if "car-added-successfully" in message.tags %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+        <h2 class="dashboard-title">Administrator Dashboard</h2>
+
+        <div class="cards-wrapper">
+
+            <!-- Card 1 -->
+            <div class="info-card">
+                <i class="fas fa-car icon"></i>
+                <h3>Total Cars</h3>
+                <p>{{ total_cars }}</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="info-card">
+                <i class="fas fa-users icon"></i>
+                <h3>Total Users</h3>
+                <p>{{ total_users }}</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="info-card">
+                <i class="fas fa-key icon"></i>
+                <h3>Active Rentals</h3>
+                <p>{{ active_rentals }}</p>
+            </div>
+
+        </div>
+
+        <div class="admin-actions">
+            <a href="{% url 'admin_add_car' %}#add-car-section" class="action-btn primary"> Add New Car</a>
+            <a href="{% url 'admin_customer_report' %}#customer-report-section" class="action-btn">Customer Report</a>
+            <a href="{% url 'admin_reserved_cars_report' %}#reserved-cars-report-section" class="action-btn">Reserved Cars Report</a>
+            <a href="{% url 'remove_cars' %}#remove-cars-section" class="action-btn primary">Remove Car</a>
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'home' %}">&larr; Back to Home</a>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

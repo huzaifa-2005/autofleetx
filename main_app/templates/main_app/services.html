@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% load static %}
+<title>{% block title %} AutoFleetX — Our Services 🚕{% endblock %}</title>
+{% block head %} 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap"
+  rel="stylesheet"
+/>
+
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/services.css' %}" />
+{% endblock %} {% block content %}
+
+<section id="luxury-cars">
+  <h2>Luxury Cars</h2>
+  <p>
+    Experience refined travel with our exclusive fleet of luxury vehicles.
+    Designed for comfort, style, and performance, our premium cars cater to
+    clients who demand the very best. Whether it's a corporate meeting, a grand
+    entrance, or a weekend getaway, our luxury offerings make every journey
+    memorable.
+  </p>
+</section>
+
+<section id="business-rentals">
+  <h2>Business Rentals</h2>
+  <p>
+    Enhance your business operations with our tailored rental solutions for
+    corporate clients. We provide flexible packages, priority service, and a
+    professional fleet to meet the needs of executives and employees alike.
+    Efficient, reliable, and presentable — ideal for professionals on the move.
+  </p>
+</section>
+
+<section id="long-term-lease">
+  <h2>Long-Term Lease</h2>
+  <p>
+    Need a car for the long haul? Our long-term lease plans offer
+    cost-effective, hassle-free alternatives to ownership. Enjoy regular
+    maintenance, roadside assistance, and a choice of vehicles that match your
+    long-term mobility goals, whether personal or professional.
+  </p>
+</section>
+
+<section id="privacy-policy">
+  <h2>Privacy Policy</h2>
+  <p>
+    Your privacy is paramount to us. We are committed to safeguarding your
+    personal data and ensuring transparency in how we collect, use, and protect
+    it. Our privacy practices comply with industry standards and regulations to
+    ensure a secure and trustworthy experience for all users.
+  </p>
+</section>
+
+<section id="terms-of-service">
+  <h2>Terms of Service</h2>
+  <p>
+    By using our platform, you agree to our terms designed to protect both our
+    business and our customers. These include policies on fair usage, booking
+    procedures, payment terms, and liabilities. We encourage users to review the
+    terms to ensure a clear understanding of mutual expectations.
+  </p>
+</section>
+
+<section id="cookie-policy">
+  <h2>Cookie Policy</h2>
+  <p>
+    Our website uses cookies to personalize your experience, analyze traffic,
+    and improve functionality. These small data files help us remember your
+    preferences and deliver a seamless browsing experience. You have full
+    control over cookie settings and can manage them anytime.
+  </p>
+</section>
+
+<div class="back-to-home">
+  <a href="{% url 'home' %}" class="back-link">&larr; Home</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+
+{% load static %}
+{% load i18n %}
+{% load allauth %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Continue with Google - AutoFleetX" %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/sociallogin.css' %}">  
+    <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" /> 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="google-auth-body">
+    <div class="google-login-wrapper">
+        <div class="google-login-card">
+            <h1 class="autofleetx-brand"><i class="fas fa-car-side"></i> AutoFleetX</h1>
+
+            <h2 class="google-login-heading">
+                {% if process == "connect" %}
+                    {% blocktrans with provider.name as provider %}Link your {{ provider }} account{% endblocktrans %}
+                {% else %}
+                    {% blocktrans with provider.name as provider %}Continue with {{ provider }}{% endblocktrans %}
+                {% endif %}
+            </h2>
+
+            <p class="google-login-description">
+                {% if process == "connect" %}
+                    {% blocktrans with provider.name as provider %}You're connecting your Google account to AutoFleetX.{% endblocktrans %}
+                {% else %}
+                    {% blocktrans with provider.name as provider %}Sign in to AutoFleetX using your Google account. Click Continue to securely proceed.{% endblocktrans %}
+                {% endif %}
+            </p>
+
+            {% element form method="post" no_visible_fields=True %}
+                {% slot actions %}
+                    {% csrf_token %}
+                    <button class="google-continue-btn">
+                        <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.5 0 6.5 1.2 8.9 3.3l6.6-6.6C35.4 2.3 30.2 0 24 0 14.6 0 6.5 5.7 2.6 14l7.9 6.1C12.6 13.6 17.8 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-2.7-.4-3.9H24v7.4h12.7c-.6 3.5-2.4 6.4-5.1 8.4l7.9 6.1C43.8 37.1 46.1 31.3 46.1 24.5z"/>
+                            <path fill="#FBBC05" d="M10.5 28.1c-.5-1.5-.9-3.2-.9-4.9s.3-3.4.9-4.9L2.6 14C.9 17.5 0 21.1 0 24.7c0 3.5.9 7.1 2.6 10.6l7.9-6.1z"/>
+                            <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.9-6.1c-2.2 1.5-5 2.3-8.3 2.3-6.1 0-11.3-4.1-13.2-9.7l-7.9 6.1C6.5 42.3 14.6 48 24 48z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+
+                    <div class="local-login-option">
+                    <p>or</p>
+                    <a href="{% url 'login' %}" class="local-login-btn">Login with Local Account</a>
+                    </div>
+                {% endslot %}
+            {% endelement %}
+        </div>
+    </div>
+</body>
+</html>

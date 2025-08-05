@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+<title>{% block title %}Customer Reports & Payments — AutoFleetX Admin 🚕{% endblock %}</title>
+{% load static %}
+
+{% block head %}  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/customer-report.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+{% endif %}
+
+<section id="customer-report-section">
+    <div class="report-container">
+
+        <h2 class="report-title">Customer Report</h2>
+
+        {% if customers_data %}
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Completed Rentals</th>
+                        <th>Total Spent (Till Last Rental)</th>
+                        <th>Current Rental</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers_data %}
+                    <tr>
+                        <td data-label="Username">{{ customer.username }}</td>
+                        <td data-label="Name">{{ customer.full_name }}</td>
+                        <td data-label="Completed Rentals">{{ customer.completed_rentals }}</td>
+                        <td data-label="Total Spent">${{ customer.total_spent }}</td>
+                        <td data-label="Current Rental">
+                            {% if customer.current_car == "No current rental" %}
+                            <span class="no-rental">No current rental</span>
+                            {% else %}
+                            {{ customer.current_car }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="action-btn-container">
+                <a href="{% url 'pdf_customer_report' %}" class="btn-download">
+                    <i class="fas fa-file-download"></i> Download PDF
+                </a>
+            </div>
+
+        {% else %}
+            <p class="no-customers-msg">No customers found.</p>
+        {% endif %}
+
+        <div class="back-dashboard">
+            <a href="{% url 'admin_dashboard' %}#admin-dashboard-section" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

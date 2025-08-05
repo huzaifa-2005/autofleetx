@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <title>{% block title %}AutoFleetX 🚕{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" />
+    {% block head %}
+    <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" />
+    {% endblock %} {% block extra_css %} {% endblock %}
+  </head>
+  <body>
+    {% block navbar %} {% include 'common-navbar.html' %} {% endblock %}
+   
+    <main>
+      <div class="content">{% block content %} {% endblock %}</div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-content">
+          <!-- Brand Section -->
+          <div class="footer-section brand-section">
+            <div class="logo">AutoFleetX</div>
+            <p>
+              Your premium car rental solution. Experience luxury, reliability,
+              and exceptional service with our diverse fleet of vehicles.
+            </p>
+            <div class="social-links">
+              <a aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              {% if user.is_superuser %}
+              <li><a href="{% url 'admin_customer_report' %}#customer-report-section">Customer Report</a></li>
+              <li><a href="{% url 'admin_dashboard' %}#admin-dashboard-section">Admin Dashboard</a></li>
+              <li><a href="{% url 'admin_contact_messages' %}#user-messages-section">User Messages</a></li>  
+              <li><a href="{% url 'home'  %}#overview-fleets">Overview</a></li>        
+              {% else %}
+              <li><a href="{% url 'home'  %}">Home</a></li>   
+              <li><a href="{% url 'home'  %}#overview-fleets">Overview</a></li>   
+              <li><a href="{% url 'contact_us' %}#contact-form">Contact US</a></li>
+              <li><a href="{% url 'all-cars' scroll_to_section=1 %}">Our Fleets</a></li>
+              {% endif %}
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div class="footer-section">
+            <h3>Services</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="{% url 'services' %}#luxury-cars">Luxury Cars</a>
+              </li>
+              <li>
+                <a href="{% url 'services' %}#business-rentals"
+                  >Business Rentals</a
+                >
+              </li>
+              <li>
+                <a href="{% url 'services' %}#long-term-lease"
+                  >Long-term Lease</a
+                >
+              </li>
+              {% if user.is_superuser %}
+              <li>
+                <a href="{% url 'home' %}#offers-homepage">Special Offers</a>
+              </li>
+              {% endif %}
+            </ul>
+            {% if not user.is_superuser %}
+            <div class="newsletter">
+              <h3>Newsletter</h3>
+              <p style="color: #cccccc; margin-bottom: 10px">
+                Subscribe for exclusive deals and updates
+              </p>
+              <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email" required />
+                <button type="submit">Subscribe</button>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 AutoFleetX. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="{% url 'services' %}#privacy-policy">Privacy Policy</a>
+            <a href="{% url 'services' %}#terms-of-service">Terms of Service</a>
+            <a href="{% url 'services' %}#cookie-policy">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.querySelectorAll(".alert").forEach((alert) => {
+        const closeBtn = document.createElement("button");
+        closeBtn.innerHTML = "&times;";
+        closeBtn.className = "alert-close";
+        closeBtn.type = "button";
+        closeBtn.onclick = () => {
+          alert.style.opacity = "0";
+          setTimeout(() => {
+            alert.remove();
+          }, 100);
+        };
+        alert.appendChild(closeBtn);
+      });
+    </script>
+
+
+  </body>
+</html>

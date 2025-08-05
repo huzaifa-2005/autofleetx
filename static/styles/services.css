@@ -1,0 +1,102 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f9f9f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #4a4a4a;
+  line-height: 1.7;
+}
+
+
+/* === Section Styling === */
+section {
+  font-family: "Playfair Display", serif;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 24px 36px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+  border-left: 6px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+section:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  background-color: #fdfdfd;
+  border-left: 6px solid rgba(243, 185, 11, 0.95);
+}
+
+/* === Heading Styling === */
+h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  background: linear-gradient(to right, #ff7e3a, #fca326);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.4;
+}
+
+/* === Paragraph Styling === */
+p {
+  font-size: 16px;
+  color: #555;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+p:hover {
+  color: #3e3d3d;
+  font-weight: 500;
+  cursor: text;
+}
+
+/* === Responsive Tweaks === */
+@media (max-width: 768px) {
+  section {
+    padding: 20px;
+    margin: 40px 12px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+}
+
+.back-to-home {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16.5px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  background-color: rgba(240, 240, 240, 0.8);
+  transition: all 0.25s ease-in-out;
+  display: inline-block;
+}
+
+.back-link:hover {
+  background-color: #e8f0fe;
+  color: #27323d;
+  font-weight: 645;
+  transform: translateX(-4px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}

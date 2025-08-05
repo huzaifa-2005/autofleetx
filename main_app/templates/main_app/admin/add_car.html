@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %} Add a New Car to Fleet — AutoFleetX Admin 🚕{% endblock %}</title>
+{% block head %}
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'styles/admin-add-car.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+{% endif %}
+
+
+
+<section id="add-car-section">
+    <div class="add-car-container">
+        <h2 class="add-car-title">Add New Car</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="add-car-form">
+        {% csrf_token %}    
+            <!-- Car Name -->
+            <p>
+                <label for="id_name">Car Name:</label>
+                <input type="text" id="id_name" name="name" required>
+            </p>
+
+            <!-- Brand -->
+            <p>
+                <label for="id_brand">Brand:</label>
+                <input type="text" id="id_brand" name="brand" required>
+            </p>
+
+            <!-- Seating Capacity -->
+            <p>
+                <label for="id_seating_capacity">Seating Capacity:</label>
+                <input type="number" id="id_seating_capacity" name="seating_capacity" min="1" max="50" required>
+            </p>
+
+            <!-- Rent per Day -->
+            <p>
+                <label for="id_rent_per_day">Rent per Day (PKR):</label>
+                <input type="number" id="id_rent_per_day" name="rent_per_day" min="0" step="0.01" required>
+            </p>
+
+            <!-- Model Year -->
+            <p>
+                <label for="id_model_year">Model Year:</label>
+                <input type="number" id="id_model_year" name="model_year" min="1900" max="2030" required>
+            </p>
+
+            <!-- Vehicle Type Dropdown -->
+            <p>
+                <label for="id_vehicle_type">Vehicle Type:</label>
+                {{ form.vehicle_type }}
+
+                
+            </p>
+            <p>
+                <label for="id_vehicle_type">Accident History:</label>
+                {{ form.accident_history }}
+            </p>
+            
+
+            <p class="image-select">
+                <label for="id_image">Car Image:</label>
+                <div class="file-upload-wrapper">
+                    <label for="id_image" class="custom-file-upload">
+                        <i class="fas fa-upload"></i> Choose File
+                    </label>
+                    <input type="file" id="id_image" name="image" accept="image/*">
+                    <div id="file-name" class="file-name no-file">No file selected</div>
+                </div>
+            </p>
+
+            <!-- Submit Button -->
+            <div class="form-button">
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-plus-circle"></i> Add Car
+                </button>
+            </div>
+        </form>
+
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="{% url 'admin_dashboard' %}#admin-dashboard-section">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('id_image');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            fileNameDisplay.textContent = `📁 ${fileName}`;
+            fileNameDisplay.className = 'file-name has-file';
+        } else {
+            fileNameDisplay.textContent = 'No file selected';
+            fileNameDisplay.className = 'file-name no-file';
+        }
+    });
+});
+</script>
+
+
+
+
+{% endblock %}
+
+

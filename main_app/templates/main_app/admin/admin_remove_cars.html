@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+<title>{% block title %}Remove a Car from Fleet — AutoFleetX Admin 🚕{% endblock %}</title>
+{% load static %}
+
+{% block head %}  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/remove-cars.css' %}">
+{% endblock %}  
+
+{% block content %}
+
+{% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+{% endif %}
+
+<section id="remove-cars-section" >
+    <div class="remove-container">
+        <h2 class="page-title"><i class="fas fa-trash-alt"></i> Remove Cars</h2>
+        <div class="messages" >
+            {% if messages %}
+                {% for message in messages %}
+                    {% if "car-removed-successfully" in message.tags %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% elif "car-can-not-be-removed" in message.tags %}
+                        <div class="alert alert-info">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div> 
+        <form method="POST" action="{% url 'remove_cars' %}">
+            {% csrf_token %}
+            <table class="cars-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all"></th>
+                        <th>Car Name</th>
+                        <th>Model</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in cars %}
+                    <tr>
+                        <td><input type="checkbox" name="car_ids" value="{{ car.id }}"></td>
+                        <td>{{ car.name }}</td>
+                        <td>{{ car.model_year }}</td>
+                        <td>{{ car.available|yesno:"Available,Unavailable" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="no-cars">No cars found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn-remove"><i class="fas fa-trash"></i> Remove Selected Cars</button>
+        </form>
+
+        <div class="back-link">
+            <a href="{% url 'admin_dashboard' %}#admin-dashboard-section"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+    
+
+    <script>
+        document.getElementById("select-all").onclick = function() {
+            const checkboxes = document.getElementsByName("car_ids");
+            for (const cb of checkboxes) cb.checked = this.checked;
+        };
+    </script>
+</section>    
+{% endblock %}

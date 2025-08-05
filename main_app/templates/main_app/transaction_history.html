@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Payment & Transactions — AutoFleetX 🚕{% endblock %}</title>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/transaction_history.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if not user.is_superuser %}
+{% include 'common-search-form.html' %}
+{% endif %}
+
+<section id="transaction_history">
+  <div class="history-container">
+    <h2>Your Transaction History</h2>
+
+    {% if transactions %}
+    <div class="table-wrapper">
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tx in transactions %}
+          <tr>
+            <td>{{ tx.get_transaction_type_display }}</td>
+            <td>PKR {{ tx.amount }}</td>
+            <td>{{ tx.description }}</td>
+            <td>{{ tx.created_at|date:"M d, Y H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="no-transactions">You have no transaction history yet.</p>
+    {% endif %}
+
+    <div class="back-home">
+      <a href="{% url 'home' %}" class="back-link">&larr; Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

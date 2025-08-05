@@ -1,0 +1,460 @@
+{% extends 'base.html' %} {% load static %}
+<title>{% block title %}Rent With Ease — AutoFleetX 🚕{% endblock %}</title>
+{% block head %}
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-SVL0qwI6iGOMUHHGQ5Df77hGbkm6X7ABAfA54RWLPDR3He8mJb3N9QqjZoZLyBqjliHYr6+hdKaHoQ1p7fdw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/rent_car.css' %}" />
+{% endblock %} 
+{% block content %} 
+{% if not user.is_superuser %}  
+{% include 'common-search-form.html' %}
+{% else %} 
+{% include 'main_app/admin/admin-search-form.html' %} 
+{% endif %}
+
+<section id="car-details-section">
+  <div class="rent-container">
+    <!-- Car Image Section -->
+    <div class="car-image">
+      {% if car.image %}
+      <img src="{{ car.image.url }}" alt="{{ car.name }}" />
+      {% else %}
+      <img src="{% static 'images/default_car.png' %}" alt="Default Car" />
+      {% endif %}
+    </div>
+
+    <div class="car-details">
+      <div class="message-container">
+        {% for message in messages %}
+        {% if "rental-already-active" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% elif "rental-not-available" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% elif "rental-time-error" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% elif "rental-future-time-error" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% elif "datetime-parse-error" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% elif "rental-insufficient-balance" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <h1>{{ car.name }}</h1>
+
+      <div class="car-info">
+        <p><strong>Brand:</strong> {{ car.brand }}</p>
+        <p><strong>Model Year:</strong> {{ car.model_year }}</p>
+        <p>
+          <strong>Seating Capacity:</strong> {{ car.seating_capacity }} Persons
+        </p>
+        <p><strong>Rent Per Day:</strong> PKR {{ car.rent_per_day }}</p>
+      </div>
+      {% if user.is_superuser %}
+
+      <div class="admin-back-to-home">
+        <a
+          href="{% url 'admin_customer_report' %}#customer-report-section"
+          class="back-to-customer-report"
+        >
+          <i class="fas fa-users"></i> Customer Report
+        </a>
+        <br />
+        <a
+          href="{% url 'admin_reserved_cars_report' %}#reserved-cars-report-section"
+          class="back-to-reserved-cars-report"
+        >
+          <i class="fas fa-car-side"></i> Reserved Cars Report
+        </a>
+      </div>
+      <div class="admin-car-metadata">
+        <h3><i class="fas fa-clipboard-list"></i> Car Record</h3>
+        <ul>
+          <li><strong>Added By:</strong> {{car.display_admin_name}}</li>
+          <li><strong>Date Added:</strong> {{ car.date_added|date:"F j, Y" }}</li>
+          <li><strong>Accident History:</strong> {{car.get_accident_history_display}}</li>
+          <li><strong>Total Rentals:</strong> {{total_rentals}} times</li>
+          <li><strong>Avg. Customer Rating:</strong> 4.6 / 5 ⭐</li>
+          <li><strong>Notes:</strong> Recently repainted and tuned up.</li>
+        </ul>
+      </div>
+
+      {% endif %} {% if car.available %} {% if not user.is_superuser %}
+      <form
+        method="POST"
+        action="{% url 'rent_car' car.id %}"
+        class="rent-form"
+      >
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="start_datetime">Start Date & Time:</label>
+          <div class="input-wrapper">
+            <input
+              type="datetime-local"
+              id="start_datetime"
+              name="start_datetime"
+              required
+            />
+            <span class="custom-placeholder" data-for="start_datetime"
+              >Select start date and time</span
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="end_datetime">End Date & Time:</label>
+          <div class="input-wrapper">
+            <input
+              type="datetime-local"
+              id="end_datetime"
+              name="end_datetime"
+              required
+            />
+            <span class="custom-placeholder" data-for="end_datetime"
+              >Select end date and time</span
+            >
+          </div>
+        </div>
+        <div class="form-submit">
+          <div class="price-div" id="price-display-container"></div>
+          <button type="submit" class="rent-button">Rent This Car</button>
+        </div>
+      </form>
+      {% endif %} {% else %}
+      <div class="not-available">
+        <p>This car is currently not available for rent.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="back-to-home">
+    <a href="{% url 'all-cars' scroll_to_section=1 %}" class="back-link">
+      <i class="fas fa-arrow-left"></i> ALL FLEETS</a
+    >
+  </div>
+</section>
+
+<script>
+          class DateTimePlaceholderManager {
+              constructor() {
+                  this.inputs = document.querySelectorAll('input[type="datetime-local"]');
+                  this.init();
+              }
+
+              init() {
+                  this.inputs.forEach(input => {
+                      this.setupInput(input);
+                  });
+              }
+
+              setupInput(input) {
+                  const placeholder = document.querySelector(`[data-for="${input.id}"]`);
+
+                  if (!placeholder) return;
+
+                  // Remove any existing placeholder attribute
+                  input.removeAttribute('placeholder');
+
+                  // Initial state
+                  this.updatePlaceholderVisibility(input, placeholder);
+
+                  // Event listeners
+                  input.addEventListener('input', () => {
+                      this.updatePlaceholderVisibility(input, placeholder);
+                      this.updateStatus(input);
+                  });
+
+                  input.addEventListener('focus', () => {
+                      this.handleFocus(input, placeholder);
+                  });
+
+                  input.addEventListener('blur', () => {
+                      this.handleBlur(input, placeholder);
+                  });
+
+                  input.addEventListener('change', () => {
+                      this.updatePlaceholderVisibility(input, placeholder);
+                      this.updateStatus(input);
+                  });
+
+                  // Handle clicks on placeholder to focus input
+                  placeholder.addEventListener('click', () => {
+                      input.focus();
+                  });
+
+                  // Initial status update
+                  this.updateStatus(input);
+              }
+
+              updatePlaceholderVisibility(input, placeholder) {
+                  const hasValue = input.value && input.value.trim() !== '';
+
+                  if (hasValue) {
+                      placeholder.classList.add('hidden');
+                      input.classList.add('has-value');
+                  } else {
+                      placeholder.classList.remove('hidden');
+                      input.classList.remove('has-value');
+                  }
+              }
+
+              handleFocus(input, placeholder) {
+                  // Hide placeholder when focused (even if no value)
+                  placeholder.style.opacity = '0.5';
+              }
+
+              handleBlur(input, placeholder) {
+                  // Show placeholder if no value when focus is lost
+                  if (!input.value || input.value.trim() === '') {
+                      placeholder.style.opacity = '1';
+                  } else {
+                      placeholder.style.opacity = '0';
+                  }
+              }
+
+              updateStatus(input) {
+                  const statusElement = document.getElementById(`${input.id.replace('_datetime', '_status')}`);
+                  if (!statusElement) return;
+
+                  const hasValue = input.value && input.value.trim() !== '';
+
+                  if (hasValue) {
+                      statusElement.className = 'status filled';
+                      statusElement.textContent = `${input.id.replace('_datetime', '').replace('_', ' ')} datetime: ${new Date(input.value).toLocaleString()}`;
+                  } else {
+                      statusElement.className = 'status empty';
+                      statusElement.textContent = `${input.id.replace('_datetime', '').replace('_', ' ')} datetime: Not selected`;
+                  }
+              }
+
+              // Public method to programmatically set values
+              setValue(inputId, value) {
+                  const input = document.getElementById(inputId);
+                  const placeholder = document.querySelector(`[data-for="${inputId}"]`);
+
+                  if (input && placeholder) {
+                      input.value = value;
+                      this.updatePlaceholderVisibility(input, placeholder);
+                      this.updateStatus(input);
+                  }
+              }
+
+              // Public method to clear values
+              clearValue(inputId) {
+                  const input = document.getElementById(inputId);
+                  const placeholder = document.querySelector(`[data-for="${inputId}"]`);
+
+                  if (input && placeholder) {
+                      input.value = '';
+                      this.updatePlaceholderVisibility(input, placeholder);
+                      this.updateStatus(input);
+                  }
+              }
+          }
+
+         document.addEventListener('DOMContentLoaded', () => {
+      window.datetimeManager = new DateTimePlaceholderManager();
+
+      // Demo: Set a value after 3 seconds to show functionality
+      setTimeout(() => {
+          const now = new Date();
+          const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+          // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+          const formatDateTime = (date) => {
+              return date.getFullYear() + '-' +
+                     String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                     String(date.getDate()).padStart(2, '0') + 'T' +
+                     String(date.getHours()).padStart(2, '0') + ':' +
+                     String(date.getMinutes()).padStart(2, '0');
+          };
+
+          console.log('Demo: Setting start datetime automatically...');
+          // Uncomment the line below to see auto-setting in action
+          // window.datetimeManager.setValue('start_datetime', formatDateTime(now));
+
+      }, 3000);
+  });
+
+  // Additional utility functions for external use
+  function setStartDateTime(datetime) {
+      if (window.datetimeManager) {
+          window.datetimeManager.setValue('start_datetime', datetime);
+      }
+  }
+
+  function setEndDateTime(datetime) {
+      if (window.datetimeManager) {
+          window.datetimeManager.setValue('end_datetime', datetime);
+      }
+  }
+
+  function clearAllDateTimes() {
+      if (window.datetimeManager) {
+          window.datetimeManager.clearValue('start_datetime');
+          window.datetimeManager.clearValue('end_datetime');
+      }
+  }
+
+  class RentalPriceCalculator {
+      constructor(rentPerDay) {
+          this.rentPerDay = rentPerDay;
+          this.startInput = document.getElementById('start_datetime');
+          this.endInput = document.getElementById('end_datetime');
+          this.priceContainer = document.getElementById('price-display-container');
+          this.init();
+      }
+
+      init() {
+          if (!this.startInput || !this.endInput || !this.priceContainer) {
+              console.error('Required elements not found');
+              return;
+          }
+
+          this.startInput.addEventListener('input', () => this.calculatePrice());
+          this.endInput.addEventListener('input', () => this.calculatePrice());
+          this.startInput.addEventListener('change', () => this.calculatePrice());
+          this.endInput.addEventListener('change', () => this.calculatePrice());
+      }
+
+      formatDuration(totalMinutes, totalDays) {
+          let durationText = '';
+
+          // Start with the given days and minutes
+          let days = totalDays;
+          let minutes = totalMinutes;
+          let hours = 0;
+
+          // Convert minutes to hours if >= 60
+          if (minutes >= 60) {
+              hours = Math.floor(minutes / 60);
+              minutes = minutes % 60; // remaining minutes
+          }
+
+          // Convert hours to days if >= 24
+          if (hours >= 24) {
+              const additionalDays = Math.floor(hours / 24);
+              days += additionalDays;
+              hours = hours % 24; // remaining hours
+          }
+
+          // Build the duration text based on what values we have
+          const parts = [];
+
+          if (days > 0) {
+              parts.push(`${days} day(s)`);
+          }
+
+          if (hours > 0) {
+              parts.push(`${hours} hour(s)`);
+          }
+
+          if (minutes > 0) {
+              parts.push(`${minutes} minute(s)`);
+          }
+
+          // Join parts with appropriate connectors
+          if (parts.length === 0) {
+              durationText = '0 minutes';
+          } else if (parts.length === 1) {
+              durationText = parts[0];
+          } else if (parts.length === 2) {
+              durationText = parts.join(' and ');
+          } else {
+              // For 3 parts: "X days, Y hours and Z minutes"
+              durationText = parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1];
+          }
+
+          return durationText;
+      }
+
+      calculatePrice() {
+          const startStr = this.startInput.value;
+          const endStr = this.endInput.value;
+
+          if (!startStr || !endStr) {
+              this.clearDisplay();
+              return;
+          }
+
+          try {
+              const startDateTime = new Date(startStr);
+              const endDateTime = new Date(endStr);
+              const now = new Date();
+
+              if (startDateTime >= endDateTime) {
+
+                  return;
+              }
+
+              if (startDateTime < now || endDateTime <= now) {
+
+                  return;
+              }
+
+              const totalRentalDurationSeconds = (endDateTime - startDateTime) / 1000;
+              const rentalDurationDays = totalRentalDurationSeconds / (24 * 60 * 60);
+              const integerDurationDays = Math.floor(rentalDurationDays);
+              const remainingSeconds = totalRentalDurationSeconds - (integerDurationDays * 86400);
+              const rentalDurationMinutes = Math.floor(remainingSeconds / 60);
+
+              const totalCost = Math.round(this.rentPerDay * rentalDurationDays);
+
+              this.showPrice(totalCost, integerDurationDays, rentalDurationMinutes);
+
+          } catch (error) {
+              this.showError("Invalid date and time input.");
+          }
+      }
+
+      showPrice(totalCost, days, minutes) {
+          const durationText = this.formatDuration(minutes, days);
+
+          this.priceContainer.innerHTML = `
+              <div class="price-display show">
+                  <div class="price-label">Total Rental Cost</div>
+                  <div class="price-amount">PKR ${totalCost.toLocaleString()}</div>
+                  <div class="duration-info">Duration: ${durationText}</div>
+              </div>
+          `;
+      }
+
+      showError(message) {
+          this.priceContainer.innerHTML = `
+              <div class="price-display price-error show">
+                  <div class="price-amount">${message}</div>
+              </div>
+          `;
+      }
+
+      clearDisplay() {
+          this.priceContainer.innerHTML = '';
+      }
+  }
+
+  // Add this to your existing DOMContentLoaded event listener
+  document.addEventListener('DOMContentLoaded', () => {
+      window.datetimeManager = new DateTimePlaceholderManager();
+
+      // Initialize the rental calculator
+      const rentPerDay = {{ car.rent_per_day }};
+      window.rentalCalculator = new RentalPriceCalculator(rentPerDay);
+  });
+</script>
+
+{% endblock %}

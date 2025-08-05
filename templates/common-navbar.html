@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{% static 'styles/common-navbar.css' %}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-content">
+        <!-- Hamburger Icon for Mobile -->
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- LEFT NAV LINKS -->
+        <div class="navbar-left">
+          {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+              <a href="{% url 'profile' %}#profile-section">
+                <i class="fas fa-user-shield"></i> Admin Profile
+              </a>
+              <a href="{% url 'admin_dashboard' %}#admin-dashboard-section">
+                <i class="fas fa-sliders-h"></i> Admin Dashboard
+              </a>
+            {% else %}
+              <a href="{% url 'profile' %}#profile-section">👤︎ User Profile</a>
+              <a href="{% url 'rental_history' %}#rental_history">
+                <i class="fa-solid fa-car-side"></i> My Rentals
+              </a>
+              <a href="{% url 'transaction_history' %}#transaction_history">
+                <i class="fa-solid fa-money-bill-transfer"></i> Transactions
+              </a>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'signup' %}">
+              <i class="fa-solid fa-right-to-bracket"></i> Sign Up
+            </a>
+          {% endif %}
+        </div>
+
+        <!-- RIGHT NAV LINKS -->
+        <div class="navbar-right">
+          <a href="{% url 'home' %}">Home</a>
+          {% if not user.is_superuser %}
+            <a href="{% url 'contact_us' %}#contact-form">
+              <i class="fas fa-envelope"></i> Contact Us
+            </a>
+          {% else %}
+            <a href="{% url 'admin:index' %}">📈 Admin Panel</a>
+          {% endif %}
+          {% if user.is_authenticated %}
+            <button onclick="confirmLogout()" class="logout-button">
+              <i class="fas fa-right-to-bracket"></i> Logout
+            </button>
+          {% else %}
+            <a href="{% url 'login' %}">Login</a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+          {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+              <a href="{% url 'profile' %}#profile-section">
+                <i class="fas fa-user-shield"></i> Admin Profile
+              </a>
+              <a href="{% url 'admin_dashboard' %}#admin-dashboard-section">
+                <i class="fas fa-sliders-h"></i> Admin Dashboard
+              </a>
+              <a href="{% url 'admin:index' %}">📈 Admin Panel</a>
+            {% else %}
+              <a href="{% url 'profile' %}#profile-section">👤︎ User Profile</a>
+              <a href="{% url 'rental_history' %}#rental_history">
+                <i class="fa-solid fa-car-side"></i> My Rentals
+              </a>
+              <a href="{% url 'transaction_history' %}#transaction_history">
+                <i class="fa-solid fa-money-bill-transfer"></i> Transactions
+              </a>
+              <a href="{% url 'contact_us' %}#contact-form">
+                <i class="fas fa-envelope"></i> Contact Us
+              </a>
+            {% endif %}
+            <button onclick="confirmLogout()" class="logout-button">
+              <i class="fas fa-right-to-bracket"></i> Logout
+            </button>
+          {% else %}
+            <a class="mobile-signup" href="{% url 'signup' %}">
+              <i class="fa-solid fa-right-to-bracket"></i> Sign Up
+            </a>
+            <a href="{% url 'login' %}">Login</a>
+          {% endif %}
+          <a href="{% url 'home' %}">Home</a>
+        </div>
+
+        <!-- CENTERED OVERLAY TEXT -->
+        {% if user.is_superuser %}
+          <div class="admin-navbar-overlay-text">
+            <p>
+              AutoFleetX<br />
+              <span>From Car Management to Customer Insights — All in One Place.</span>
+            </p>
+          </div>
+        {% else %}
+          <div class="navbar-overlay-text">
+            <p>
+              AutoFleetX<br />
+              <span>Explore Cars Built for Every Road and Every Mood.</span>
+            </p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Logout</button>
+          </form>
+          <button type="button" onclick="closeLogoutModal()" class="btn-cancel">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function confirmLogout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
+
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+
+      function toggleMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+    </script>
+  </body>
+</html>
+

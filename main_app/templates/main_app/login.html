@@ -1,0 +1,132 @@
+{% load socialaccount %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Log In to Your Account — AutoFleetX 🚕{% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}" />
+    <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="branding">
+      <h1><i class="fas fa-car-side"></i> AutoFleetX</h1>
+      <p>
+        Welcome back! Access your premium car rental experience. Drive luxury,
+        comfort, and style at your fingertips.
+      </p>
+    </div>
+
+    <div class="form-container">
+      <h2>
+        <i
+          class="fas fa-sign-in-alt"
+          style="margin-right: 10px; color: #667eea"
+        ></i
+        >Login
+      </h2>
+
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        <i
+          class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}exclamation-circle{% else %}info-circle{% endif %}"
+          style="margin-right: 8px"
+        ></i>
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %}
+
+      <form method="POST">
+        {% csrf_token %} {{ form.as_p }}
+
+        <div class="button-wrapper">
+          <button type="submit">
+            <i class="fas fa-unlock-alt" style="margin-right: 8px"></i>
+            <span>Login</span>
+          </button>
+        </div>
+        <hr />
+        <div class="login-with-google">
+          <p class="login-divider">Or login with:</p>
+          <a href="{% provider_login_url 'google' %}">
+            <button class="google-btn" type="button">Login with Google</button>
+          </a>
+        </div>
+      </form>
+
+      <div class="form-footer">
+        <p>
+          New to AutoFleetX?
+          <a href="{% url 'signup' %}"
+            ><i class="fas fa-user-plus" style="margin-right: 5px"></i>Create
+            Account</a
+          >
+        </p>
+        <a class="back-to-home" href="{% url 'home' %}"
+          ><i class="fas fa-arrow-left" style="margin-right: 5px"></i>Back to
+          Home</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // Add some interactive enhancements
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add focus animation to form inputs
+        const inputs = document.querySelectorAll("input, textarea");
+        inputs.forEach((input) => {
+          input.addEventListener("focus", function () {
+            this.parentElement.style.transform = "scale(1.02)";
+            this.parentElement.style.transition = "transform 0.2s ease";
+          });
+
+          input.addEventListener("blur", function () {
+            this.parentElement.style.transform = "scale(1)";
+          });
+        });
+
+        // Add ripple effect to button
+        const button = document.querySelector('button[type="submit"]');
+        button.addEventListener("click", function (e) {
+          let ripple = document.createElement("span");
+          ripple.style.position = "absolute";
+          ripple.style.borderRadius = "50%";
+          ripple.style.background = "rgba(255,255,255,0.6)";
+          ripple.style.transform = "scale(0)";
+          ripple.style.animation = "ripple 0.6s linear";
+          ripple.style.left = e.clientX - this.offsetLeft - 10 + "px";
+          ripple.style.top = e.clientY - this.offsetTop - 10 + "px";
+          ripple.style.width = ripple.style.height = "20px";
+
+          this.appendChild(ripple);
+
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add CSS for ripple animation
+      const style = document.createElement("style");
+      style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>

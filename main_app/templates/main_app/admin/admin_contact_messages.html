@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% load static %}
+<title>{% block title %}User Feedback & Messages — AutoFleetX Admin 🚕{% endblock %}</title> 
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'styles/admin-messages.css' %}" />
+
+{% endblock %} {% block content %}
+
+{% include 'main_app/admin/admin-search-form.html'%}
+<section id="user-messages-section" >
+  <div class="admin-message-container">
+    <h2 style="color: #003049; text-align: center">User Feedback And Queries</h2>
+
+    {% for message in messages %}
+    <div class="message-card">
+      <div class="message-header">
+        <div class="message-name">{{ message.name }}</div>
+        <div class="message-email">{{ message.email }}</div>
+        <div class="message-timestamp">{{ message.created_at }}</div>
+      </div>
+      <div class="message-body">{{ message.message }}</div>
+
+      <form method="post" class="reply-form">
+        {% csrf_token %}
+        <input type="hidden" name="message_id" value="{{ message.id }}" />
+        <textarea
+          name="reply"
+          placeholder="Write your reply here..."
+          required
+        ></textarea>
+        <button type="submit">Send Response</button>
+      </form>
+    </div>
+    {% empty %}
+    <br>
+    <br>
+    <br>
+    <p style="text-align: center; color: #777">No messages found.</p>
+    <br><br>
+    <br><br>
+    {% endfor %}
+  </div>
+</section>
+<div class="back-to-home">
+    <a href="{% url 'home' %}" class="back-link">&larr; Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/common-search-form.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</head>
+<body>
+   <main class="main-content">
+      <div class="form-section">
+        <h2>Live the Road Your Way</h2>
+        <div class="vehicle-selection">
+          <div class="vehicle-option">
+            <input type="radio" name="vehicle" id="cars" checked />
+            <label for="cars">
+              <i class="fas fa-car-side" style="margin-right: 5px"></i>Cars
+            </label>
+          </div>
+          <div class="vehicle-option">
+            <input type="radio" name="vehicle" id="vans" />
+            <label for="vans">
+              <i class="fas fa-shuttle-van" style="margin-right: 5px"></i>Vans &
+              Trucks
+            </label>
+          </div>
+        </div>
+
+        <form method="POST" action="{% url 'all-cars' scroll_to_section=1  %}" > 
+        {% csrf_token %}  
+          <div class="form-grid">
+            <div class="form-control">
+                <label>Minimum Rent Per Day (PKR)</label>
+                <input type="number" name="min_rent" placeholder="Enter minimum rent" min="0" />
+            </div>
+          
+            <div class="form-control">
+                <label>Maximum Rent Per Day (PKR)</label>
+                <input type="number" name="max_rent" placeholder="Enter maximum rent" min="0" />
+            </div>
+
+            <div class="form-control">
+                <label>Vehicle Brand</label>
+                <input type="text" name="brand" placeholder="Enter vehicle brand" />
+            </div>
+
+            <div class="form-control">
+                <label>Seating Capacity</label>
+                <input type="number" name="seating_capacity" min="1" placeholder="Enter seating capacity" />
+            </div>
+            <!-- Vehicle Type Selector -->
+            <div class="form-control" id="vehicle-type-group">
+            <label for="vehicle-type">Vehicle Type</label>
+            <select id="vehicle-type" name="vehicle_type">
+                <option value=""> Select vehicle type </option>
+                <option value="City Car">CITY CAR</option>
+                <option value="Electric">ELECTRIC CAR</option>
+                <option value="Premium">PREMIUM</option>
+            </select>
+            </div>
+            <!-- Hidden input for vans/trucks -->
+            <input
+            type="hidden"
+            id="hidden-vehicle-type"
+            name="vehicle_type"
+            value="Van OR Truck"
+            disabled
+            />
+            
+          
+            
+            
+          </div>
+          
+          
+          <button class="submit-btn" type="submit">SEARCH</button>
+          <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+          <script>
+            document.querySelectorAll(".datetime-wrapper").forEach((wrapper) => {
+            const input = wrapper.querySelector("input");
+
+            function checkValue() {
+                if (input.value) {
+                wrapper.classList.add("has-value");
+                } else {
+                wrapper.classList.remove("has-value");
+                }
+            }
+
+            input.addEventListener("input", checkValue);
+            input.addEventListener("change", checkValue);
+
+            input.addEventListener("focus", () => wrapper.classList.add("has-value"));
+            input.addEventListener("blur", () => {
+                if (!input.value) {
+                wrapper.classList.remove("has-value");
+                }
+            });
+
+            checkValue();
+
+            input.addEventListener("focus", function () {
+                this.parentElement.style.transform = "scale(1.02)";
+            });
+            input.addEventListener("blur", function () {
+                this.parentElement.style.transform = "scale(1)";
+            });
+            });
+
+            flatpickr("#rentalStartDate", {
+            dateFormat: "Y-m-d",
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            onOpen: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            });
+
+            flatpickr("#rentalReturnDate", {
+            dateFormat: "Y-m-d",
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            onOpen: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            });
+
+            flatpickr("#rentalStartTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true,
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            onOpen: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            });
+
+            flatpickr("#rentalReturnTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true,
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            onOpen: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add("small");
+            },
+            });
+          </script>
+          <script>
+            const carsRadio = document.getElementById("cars");
+            const vansRadio = document.getElementById("vans");
+            const vehicleTypeGroup = document.getElementById("vehicle-type-group");
+            const vehicleTypeSelect = document.getElementById("vehicle-type");
+            const hiddenInput = document.getElementById("hidden-vehicle-type");
+
+            function toggleVehicleTypeInput() {
+            if (carsRadio.checked) {
+                vehicleTypeGroup.style.display = "flex";
+                vehicleTypeSelect.disabled = false;
+                hiddenInput.disabled = true;
+            } else if (vansRadio.checked) {
+                vehicleTypeGroup.style.display = "none";
+                vehicleTypeSelect.disabled = true;
+                hiddenInput.disabled = false;
+            }
+            }
+
+            carsRadio.addEventListener("change", toggleVehicleTypeInput);
+            vansRadio.addEventListener("change", toggleVehicleTypeInput);
+
+            // Initial setup
+            toggleVehicleTypeInput();
+          </script>
+        </form>
+      </div>
+   </main>
+
+</body>
+</html>

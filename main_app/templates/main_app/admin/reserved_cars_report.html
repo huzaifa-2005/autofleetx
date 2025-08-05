@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Reserved Cars Overview — AutoFleetX Admin 🚕{% endblock %}</title>
+{% block head %}  
+
+{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/reserved_cars_report.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+     {% include 'main_app/admin/admin-search-form.html'%}
+{% endif %}
+
+
+<section id="reserved-cars-report-section">
+    <div class="report-container">
+        <h2 class="report-heading">Reserved Cars Report</h2>
+
+        {% if rentals %}
+            <div class="report-table-wrapper">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Car Name</th>
+                            <th>Reserved By (User)</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rental in rentals %}
+                        <tr>
+                            <td>{{ rental.car.name }}</td>
+                            <td>{{ rental.user.username }}</td>
+                            <td>{{ rental.start_datetime }}</td>
+                            <td>{{ rental.end_datetime }}</td>
+                            <td>{{ rental.total_cost }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>    
+            <div class="button-wrapper">
+                <a href="{% url 'pdf_reserved_cars_report' %}" class="download-btn">Download PDF</a>
+            </div>
+        {% else %}
+            <p class="no-data-text">No reserved cars found.</p>
+        {% endif %}
+
+        <div class="back-link-wrapper">
+            <a href="{% url 'admin_dashboard' %}#admin-dashboard-section" class="back-link">&larr; Back to Dashboard</a>
+        </div>
+    </div>
+</section>
+
+
+    
+{% endblock %}
+
+

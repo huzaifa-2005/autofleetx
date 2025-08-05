@@ -1,0 +1,129 @@
+html{
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+}
+
+.admin-message-container {
+  max-width: 850px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.message-card {
+  background-color: #f4f4f4;   
+  border-left: 5px solid #003049;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.message-card:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 5px solid #fca311;
+}
+
+.message-header {
+  margin-bottom: 10px;
+}
+
+.message-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #003049;
+}
+
+.message-email {
+  font-size: 14px;
+  color: #666;
+  text-transform: lowercase;
+}
+.message-timestamp {
+  font-size: 13px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.message-body {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+  padding-bottom: 10px;
+}
+
+.reply-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.reply-form textarea {
+  resize: none;
+  border-radius: 8px;
+  border: 1px solid rgb(210, 210, 210);
+  padding: 10px;
+  min-height: 60px;
+  font-size: 14px;
+  outline: none;
+}
+.reply-form textarea:hover {
+  border: 2px solid rgb(210, 210, 210);
+}
+
+.reply-form button {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 17px;
+  font-weight: bold;
+  color: #003049;
+  background-color: #fca311;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  align-self: flex-end;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reply-form button:hover {
+  background-color: #ffb703;
+}
+.back-to-home {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16.5px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  background-color: rgba(240, 240, 240, 0.8);
+  transition: all 0.25s ease-in-out;
+  display: inline-block;
+}
+
+.back-link:hover {
+  background-color: #e8f0fe;
+  color: #27323d;
+  font-weight: 645;
+  transform: translateX(-4px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}

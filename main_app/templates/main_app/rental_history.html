@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Your Rental History — AutoFleetX 🚕{% endblock %}</title>
+{% block head %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/rental_history.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if not user.is_superuser %}
+{% include 'common-search-form.html'  %}
+{% else %}
+{% include 'admin-search-form.html' %}
+{% endif %}
+
+<section id="rental_history">
+    <div class="history-container">
+        <br>
+        <div class="message" >
+            {% if messages %}
+            {% for message in messages %}
+                {% if "rental-success-minutes-days" in message.tags %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="message" >
+            {% if messages %}
+            {% for message in messages %}
+                {% if "rental-success-days" in message.tags %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="message" >
+            {% if messages %}
+            {% for message in messages %}
+                {% if "rental-success-minutes" in message.tags %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <br>
+        <h2 class="history-heading">My Rental History</h2>
+
+        
+
+        {% if rentals %}
+            <table class="rental-table">
+                <thead>
+                    <tr>
+                        <th>Car Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Amount Paid</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in rentals %}
+                    <tr>
+                        <td>{{ rental.car.name }}</td>
+                        <td>{{ rental.start_datetime }}</td>
+                        <td>{{ rental.end_datetime }}</td>
+                        <td>PKR {{ rental.total_cost }}</td>
+                        <td>
+                            {% if rental.is_active %}
+                                <span class="status-active">Active</span>
+                            {% else %}
+                                <span class="status-completed">Completed</span>
+                                {% if rental.returned_early %}
+                                    <div class="status-early">Returned Early</div>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if rental.is_active %}
+                            <form method="POST" action="{% url 'return_car' rental.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="return-btn">Return Now</button>
+                            </form>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-history">You have no rental history yet.</p>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="{% url 'home' %}">&larr; Back to Home</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

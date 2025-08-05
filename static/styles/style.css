@@ -1,0 +1,352 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  padding: 1rem 1.2rem;
+  margin: 1rem auto;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid transparent;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.3s ease-out forwards;
+  width: 60%;
+  position: absolute;
+  z-index: 1000;
+  transition: opacity 0.1s ease-out;
+}
+
+/* Success Alert */
+.alert-success {
+  background-color: rgba(240, 255, 244, 0.75);
+  border-left-color: #4caf50;
+  color: #256029;
+}
+
+/* Info Alert */
+.alert-info {
+  background-color: rgba(235, 248, 255, 0.75);
+  border-left-color: #2196f3;
+  color: #1e4d7d;
+}
+
+/* Warning Alert */
+.alert-warning {
+  background-color: rgba(255, 250, 240, 0.75);
+  border-left-color: #ff9800;
+  color: #8a4b00;
+}
+
+/* Error Alert */
+.alert-error {
+  background-color: rgba(255, 245, 245, 0.75);
+  border-left-color: #f44336;
+  color: #7b1e1e;
+}
+
+/* Close Button with Hover Effect */
+.alert-close {
+  margin-left: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.alert-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.rent-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.rent-button:hover {
+  background-color: #0056b3;
+}
+
+.unavailable {
+  opacity: 0.5;
+  position: relative;
+}
+
+
+
+.car-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.car-details {
+  padding: 10px;
+}
+.footer {
+  background-color: #151c24;
+  color: #ffffff;
+  padding: 60px 0 20px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b35, #f7931e, #ffd23f);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+.brand-section{
+ 
+  margin-top: -42px;
+}
+.brand-section p {
+ 
+  margin-top: -10px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-section h3 {
+  margin-top: -40px;
+  margin-left: 40px;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b35, #f7931e);
+}
+
+.brand-section .logo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-section p {
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.social-links {
+  margin-top: -0.825rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  gap: 15px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.social-links a:hover {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #cccccc;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footer-links a:hover {
+  color: #ff6b35;
+  padding-left: 8px;
+}
+.newsletter {
+  margin-top: 60px;
+  margin-right: 0px;
+}
+.newsletter-form {
+  display: flex;
+  margin-top: 15px;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.newsletter-form input::placeholder {
+  color: #999999;
+}
+
+.newsletter-form input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.newsletter-form button {
+  padding: 12px 25px;
+  border: none;
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-form button:hover {
+  background: linear-gradient(135deg, #f7931e, #ffd23f);
+  transform: scale(1.05);
+}
+
+.footer-bottom {
+  font-family: "JetBrains Mono", monospace;
+  border-top: 1px solid #333333;
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-bottom p {
+  color: #888888;
+  font-size: 14px;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-bottom-links a {
+  color: #888888;
+  text-decoration: none;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: #ff6b35;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-bottom-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .newsletter-form input,
+  .newsletter-form button {
+    border-radius: 0;
+  }
+
+  .newsletter-form input {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .newsletter-form button {
+    border-radius: 0 0 12px 12px;
+  }
+}

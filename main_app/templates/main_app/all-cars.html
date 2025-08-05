@@ -1,0 +1,182 @@
+{% extends "base.html" %} {% load static %}
+<title>{% block title %}Browse Cars for Rent — AutoFleetX 🚕{% endblock %}</title>
+{% block head %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/all-cars.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="top">
+  <div class="top-content">
+    {% if user.is_superuser %}
+    <div class="admin-top-text">
+      <p>
+        Your Admin Tools — Just a Click Away.<br />
+        <span
+          >Approve Rentals, Manage Users, and Optimize Operations —
+          Seamlessly.</span
+        >
+        <span>View Reports and Analytics Now Through Dashboard</span>
+      </p>
+    </div>
+    {% else %}
+    <div class="top-text">
+      <p>
+        Ready to Ride?<br />
+        <span>From City Cruisers to Power Machines — We’ve Got It All.</span>
+        <span>Book Now and Hit the Road in Minutes!</span>
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if user.is_superuser %}
+{% include 'main_app/admin/admin-search-form.html' %}
+{% else %} 
+{% include 'common-search-form.html' %} 
+{% endif %}
+
+<section id="cars-section">
+  <div class="messages">
+    <br />
+    <br />
+    <br />
+    {% for message in messages %} 
+    {% if "seating-capacity-error" in message.tags %}
+    <div class="alert alert-danger">{{ message }}</div>
+    {% elif "rent-per-day-error" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% elif "no-search-criteria" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% elif "search-error" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% elif "no-cars-found" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% elif "search-error" in message.tags %}
+    <div class="alert alert-info">{{ message }}</div>
+    {% elif "no-search-criteria" in message.tags %}
+    <div class="alert alert-info">{{ message }}</div>
+    {% elif "car-not-found" in message.tags %}
+    <div class="alert alert-info">{{ message }}</div>
+    {% endif %} {% endfor %}
+    <br />
+    <br />
+    <br />
+  </div>
+
+  <div class="car-grid">
+    {% for car in page_obj %}
+    <div class="car-card">
+      {% if car.image %}
+      <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image" />
+      {% else %}
+      <img
+        src="{% static 'images/default_car.png' %}"
+        alt="Default Car"
+        class="car-image"
+      />
+      {% endif %}
+      <div class="car-details">
+        <h2>{{ car.name }}</h2>
+        <div class="brand">
+          Brand: <span class="brand-name">{{ car.brand }}</span>
+        </div>
+        <div class="seats">
+          <i class="fas fa-user"></i> {{ car.seating_capacity }} seats
+          <span class="vehicle-type"
+            ><i class="fa-solid fa-car icon-vehicle"></i>
+            {{car.get_vehicle_type_display}}</span
+          >
+        </div>
+        <div class="rent">
+          <i class="fas fa-tag"></i> {{ car.rent_per_day}}
+          <span class="currency">PKR/DAY</span>
+        </div>
+        <!-- {{ car.rent_per_day}} -->
+        <!-- <p><strong>Model Year:</strong> {{ car.model_year }}</p> -->
+
+        {% if not car.available %}
+        <div
+          class="not-available-tag"
+          onclick="showRentalInfoModal({{ car.id }})"
+        >
+          Not Available
+        </div>
+        {% else %} {% if user.is_authenticated %}
+        <a href="{% url 'car_detail' car.id %}#car-details-section" class="rent-button">Explore</a>
+        {% else %}
+        <a href="{% url 'login' %}?next={% url 'car_detail' car_id=car.id %}#car-details-section" class="rent-button" >Login to Rent</a>
+        {% endif %} {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    window.addEventListener("load", function () {
+      {% if scroll_to_section %}
+        document.getElementById("cars-section").scrollIntoView({ behavior: "smooth" });
+      {% endif %}
+    });
+  </script>
+</section>
+
+<!-- Pagination controls -->
+<div class="pagination">
+  {% if page_obj.has_previous %}
+  <a
+    href="{% url 'car_list' page=page_obj.previous_page_number scroll_to_section=1 %}"
+    class="pagination-button"
+    >Previous</a
+  >
+  {% endif %}
+
+  <span>Page {{ page_obj.number }} of {{ total_pages }}</span>
+
+  {% if page_obj.has_next %}
+  <a
+    href="{% url 'car_list' page=page_obj.next_page_number scroll_to_section=1 %}"
+    class="pagination-button"
+    >Next</a
+  >
+  {% endif %}
+</div>
+
+<div class="back-to-home">
+  <a href="{% url 'all-cars' scroll_to_section=1 %}" class="back-link">&larr; All Fleets</a>
+</div>
+
+
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Logout</button>
+          </form>
+          <button type="button" onclick="closeLogoutModal()" class="btn-cancel">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function confirmLogout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
+
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+    </script>
+
+
+{% endblock %}

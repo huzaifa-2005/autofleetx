@@ -1,0 +1,104 @@
+/* Transaction History Page Styles */
+body {
+  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#transaction_history {
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.history-container {
+  width: 100%;
+  max-width: 960px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.history-container h2 {
+  color: #003049;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  min-width: 100px;
+}
+
+.transaction-table th {
+  background-color: #003049;
+  color: #ffffff;
+}
+
+.transaction-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.transaction-table tr:hover {
+  background-color: #e8f5e9;
+}
+
+.no-transactions {
+  text-align: center;
+  font-size: 1rem;
+  color: #666666;
+  margin-top: 2rem;
+}
+
+.back-home {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.back-link {
+  display: inline-block;
+  background-color: #fca311;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-link:hover {
+  background-color: #e89400;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .transaction-table th,
+  .transaction-table td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .history-container {
+    padding: 1.2rem;
+  }
+
+  .back-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

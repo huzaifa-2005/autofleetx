@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{% static 'styles/common-home-navbar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar-content">
+        <div class="left-content">
+          <div class="logo">AutofleetX</div>
+          <div class="hero-line">
+            Business rentals with AutoFleetX: Subscribe now
+          </div>
+        </div>
+        <div class="right-content">
+            <button class="hamburger" onclick="toggleMobileMenu()" type="button" aria-label="Toggle menu">
+              <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- NAV BUTTONS HERE -->
+            <div class="nav-buttons" id="mobileMenu">
+              {% if user.is_authenticated %}
+              <button onclick="confirmLogout()">
+                <i class="fas fa-right-to-bracket"></i> Logout
+              </button>
+              {% else %}
+              <button onclick="window.location.href='{% url 'login' %}'">
+                <i class="fas fa-right-to-bracket"></i> Login
+              </button>
+              {% endif %}
+              <button onclick="window.location.href='{% url 'contact_us' %}#contact-form'">
+                <i class="fas fa-comment-dots"></i> Contact Us
+              </button>
+              <button onclick="window.location.href='{% url 'home' %}#overview-fleets'">
+                <i class="fas fa-car"></i> Overview
+              </button>
+            </div>
+        </div>
+
+        <!-- right-content ended -->
+      </div>
+    </header>
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Logout</button>
+          </form>
+          <button type="button" onclick="closeLogoutModal()" class="btn-cancel">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function confirmLogout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
+
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('show');
+      }
+    </script>
+    <div class="fleets-container">
+      <button
+        class="our-fleets-btn"
+        onclick="window.location.href='{% url 'all-cars' scroll_to_section=0 %}'"
+      >
+        <i class="fas fa-bars"></i> Our Fleets
+      </button>
+
+      {% for message in messages %} {% if "account-created" in message.tags %}
+      <div class="alert alert-success">{{ message }}</div>
+      {% endif %} {% endfor %}
+    </div>
+
+    {% include 'common-search-form.html' %}
+
+    
+  </body>
+</html>
