@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# Install dependencies
-pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --noinput
-
-# Run migrations
+# Apply database migrations
 python manage.py migrate
+
+# Collect static files into STATIC_ROOT
+python manage.py collectstatic --noinput
