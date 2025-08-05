@@ -2,10 +2,11 @@ from pathlib import Path
 import os
 from decouple import config, Csv
 import dj_database_url
+from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
 
 try:
     ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())

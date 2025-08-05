@@ -11,9 +11,9 @@ venv/
 # SQLite (no longer needed)
 db.sqlite3
 
-# Static & Media (optional for local use; keep if you deploy differently)
 
-media/
+
+
 
 # IDEs & Editors
 .vscode/
