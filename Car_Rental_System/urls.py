@@ -15,6 +15,7 @@ urlpatterns = [
 since we  don't have a separate web server 
 therefore Django temporarily acts like a file server to make development easier.'''
 if settings.DEBUG:
+    # Development - Django serves media files
     # Only serve static and media files manually when developing locally -- DEBUG = True.
     # static is a django helper function to serve static files
     # static()--it generates a new URL pattern for serving static files during development.
@@ -22,3 +23,8 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # MEDIA_URL	URL prefix for media files
     # STATIC_ROOT	Folder where collected static files are stored
     # MEDIA_ROOT	Folder where uploaded media files are stored
+
+
+else:
+    # Production - Also serve media files through Django
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
