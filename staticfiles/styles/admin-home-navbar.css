@@ -1,0 +1,383 @@
+* {
+  margin: 0;
+  padding: 0;
+  
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "JetBrains Mono", monospace;
+  color: #333;
+  background-color: whitesmoke;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+html {
+    scroll-behavior: smooth;
+  }
+
+.navbar {
+  
+  background: #151c24;
+  height: 250px;
+  width: 100%;
+  position: relative;
+  filter: brightness(1);
+}
+
+
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, transparent 50%),
+    linear-gradient(240deg, transparent 0%, rgba(255, 255, 255, 0.05) 35%, transparent 70%),
+    repeating-linear-gradient(45deg, 
+      transparent 0px, 
+      transparent 40px, 
+      rgba(255, 255, 255, 0.02) 41px, 
+      rgba(255, 255, 255, 0.02) 42px, 
+      transparent 43px, 
+      transparent 80px);
+  background-size: 200% 200%, 150% 150%, 80px 80px;
+  animation: flowingWaves 15s ease-in-out infinite;
+  z-index: 1;
+  
+}
+
+.navbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(59, 130, 246, 0.1) 50%, 
+    transparent 70%);
+  animation: shimmer 8s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes flowingWaves {
+  0%, 100% { 
+    background-position: 0% 0%, 0% 0%, 0% 0%; 
+  }
+  50% { 
+    background-position: 100% 100%, -100% -100%, 40px 40px; 
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+
+.navbar-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+  color: white;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.autofleetX-top .landing-top-text {
+  font-size: 50px;
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace;
+  color: #ffffff;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.admin-hero-line {
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 8px 0px 8px  14px; ;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-left: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 580px;
+}
+.right-content {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+.nav-buttons {
+  display: flex; 
+  gap: 12px;
+}
+
+.nav-buttons button {
+  margin-left: 15px;
+  font-weight: 600;
+  padding: 10px 10px;
+  font-size: 13px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-buttons button i {
+  margin-right: 3.3px;
+}
+
+.our-fleets-btn {
+  margin-top: 8px;
+  margin-left: 86px;  
+  margin-bottom: -80px;
+  background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f);
+  color: #fff;
+  height: 49px;
+  font-size: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background-size: 200%;
+  background-position: left center;
+  transition: all 0.4s ease, background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.our-fleets-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ca4e20, #e7810c, #fdc40a);
+  background-position: right center;
+}
+
+.our-fleets-btn i {
+  font-size: 18px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  z-index: 999;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 550;
+  color: #154352;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.btn-confirm {
+  background-color: #d9534f;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15.5px;
+  font-weight: 620;
+  word-spacing: -3;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-confirm:hover {
+  background-color: #c9302c;
+  transform: scale(1.03);
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15.5px;
+  font-weight: 620;
+  word-spacing: -3;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+  transform: scale(1.03);
+}
+
+
+/* Hide hamburger on desktop */
+.hamburger {
+  display: none;
+}
+
+/* Desktop: nav-buttons always visible */
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .navbar-content {
+   
+    flex-direction: row; /* Changed from column to row */
+    align-items: center; /* Center align items */
+    justify-content: space-between; /* Space between left and right content */
+    padding: 6px;
+    position: relative; /* Add relative positioning */
+  }
+
+  .left-content {
+    width: auto; /* Changed from 100% to auto */
+    margin-bottom: 0; /* Remove bottom margin */
+    flex: 1; /* Take remaining space */
+  }
+
+  .right-content {
+    width: auto; /* Changed from 100% to auto */
+    position: relative; /* Ensure relative positioning */
+  }
+
+  .autofleetX-top .landing-top-text  {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .admin-hero-line {
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+
+  .hamburger {
+  display: block;
+  font-size: 1.8rem;
+  cursor: pointer;
+  margin:  0.1rem 0.2rem  13rem 0rem; /* Adjusted margin for better alignment */;
+  padding: 8px;
+  color: #333;
+  background: none;
+  border: none;
+  position: relative;
+  z-index: 1001;
+  align-self: flex-start; /* This will align it to the top */
+}
+
+  .hamburger:hover {
+    color: #4d4f52; /* Add hover effect */
+  }
+
+.nav-buttons {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 180px;
+  gap: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0.7rem 3.5rem 0.7rem 0.2rem;
+  z-index: 1000;
+  margin-top: -15.7rem;
+  margin-left: -0.1rem;
+  box-sizing: border-box; /* This ensures padding is included in width */
+}
+
+  .nav-buttons.show {
+    display: flex;
+  }
+
+  .nav-buttons button {
+  width: 100%;
+  text-align: left;
+  padding: 6px 1px;
+  font-size: 0.75rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #495057;
+  box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+ 
+  
+}
+
+  .nav-buttons button:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: translateY(-1px); /* Subtle lift effect */
+  }
+
+  .nav-buttons button i {
+    margin-right: 8px; /* Space between icon and text */
+    width: 16px; /* Fixed width for icon alignment */
+  }
+
+  .our-fleets-btn {
+    width: 100%;
+    margin: 16px auto;
+    display: block;
+    font-size: 1rem;
+  }
+
+  .modal-box {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  /* Ensure navbar doesn't interfere with content below */
+  .fleets-container {
+    margin-top: 20px; /* Add some space */
+  }
+}

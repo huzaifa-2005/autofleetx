@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef1f5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #2c3e50;
+}
+
+/* Branding */
+.branding {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-right: 6%;
+}
+
+.branding h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #f57c00;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.branding p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #607d8b;
+  max-width: 580px;
+  margin: 8px auto 0;
+  line-height: 1.6;
+}
+
+/* Form container */
+.form-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px 22px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 1.6rem;
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+/* Alerts */
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.alert-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.alert-error,
+.alert-danger {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+form label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #37474f;
+  margin-bottom: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inputs */
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: #fafafa;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #fbc02d;
+  background: #fff;
+  outline: none;
+}
+
+/* Submit button */
+.button-wrapper {
+  text-align: center;
+  margin-top: 6px;
+}
+
+button[type="submit"] {
+  background: linear-gradient(135deg, #f57c00, #fbc02d);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(245, 124, 0, 0.2);
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #fbc02d, #f57c00);
+  transform: translateY(-1px);
+}
+
+/* Footer */
+.form-footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.form-footer p {
+  color: #78909c;
+  padding-top: 10px;
+}
+
+.form-footer a {
+  color: #388e3c;
+  font-weight: 600;
+  text-decoration: none;
+  
+  transition: color 0.2s ease;
+}
+
+.form-footer a:hover {
+  color: #f57c00;
+}
+
+/* Google Login Section */
+.login-with-google {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.login-divider {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #607d8b;
+  margin-bottom: 10px;
+  letter-spacing: 0.4px;
+  opacity: 0.8;
+}
+
+/* Google-styled button */
+.google-btn {
+  background-color: #ffffff;
+  color: #388e3c;
+  border: 2px solid #388e3c;
+  padding: 10px 26px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+}
+
+.google-btn:hover {
+  background-color: #388e3c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(56, 142, 60, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px 15px;
+  }
+
+  .branding h1 {
+    font-size: 1.8rem;
+  }
+
+  .form-container h2 {
+    font-size: 1.4rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 10px 22px;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+    padding: 9px 22px;
+  }
+}
+.back-to-home {
+  display: inline-block;
+  margin-top: 16px;
+  color: #388e3c;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-to-home:hover {
+  color: #f57c00;
+}

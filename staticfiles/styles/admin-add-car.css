@@ -1,0 +1,194 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Add Car Section */
+#add-car-section {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+}
+
+.add-car-container {
+  background-color: white;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+  max-width: 600px;
+  width: 100%;
+}
+
+.add-car-title {
+  font-size: 28px;
+  text-align: center;
+  color: #003049;
+  margin-bottom: 30px;
+}
+
+.add-car-form p {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-car-form label {
+  font-weight: 600;
+  color: #003049;
+  margin-bottom: 6px;
+}
+
+.add-car-form input,
+.add-car-form select {
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.add-car-form input:focus,
+.add-car-form select:focus {
+  border-color: #fca311;
+  box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.2);
+}
+
+/* Enhanced dropdown styling */
+.add-car-form select {
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  max-height: 45px;
+}
+
+.add-car-form select:hover {
+  border-color: #fca311;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Reduce dropdown option height */
+.add-car-form select option {
+  padding: 8px 12px;
+  font-size: 11px;
+  line-height: -0.1;
+  background-color: white;
+  color: #003049;
+}
+
+.add-car-form select option:hover {
+  background-color: #f8f9fa;
+}
+
+/* File upload style */
+.file-upload-wrapper {
+  margin-top: -20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.image-select {
+  margin-left: 6px;
+  margin-top: 105px;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: #fca311;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.custom-file-upload:hover {
+  background-color: #e69500;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* File name display */
+.file-name {
+  margin-top: 8px;
+  color: #555;
+  font-style: italic;
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  min-width: 200px;
+  text-align: center;
+}
+
+.file-name.has-file {
+  color: #28a745;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.file-name.no-file {
+  color: #6c757d;
+  background-color: #eff1f4;
+  border-color: #e9ecef;
+}
+
+/* Submit Button */
+.form-button {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.submit-button {
+  padding: 12px 24px;
+  background-color: #003049;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #002437;
+}
+
+/* Back Link */
+.back-link {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.back-link a {
+  color: #003049;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+  color: #fca311;
+}
