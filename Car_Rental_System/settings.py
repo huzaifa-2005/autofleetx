@@ -16,7 +16,7 @@ try:
 except:
     # Fallback if ALLOWED_HOSTS env var is not set
     ALLOWED_HOSTS = [
-        'autofleetx-production-c144.up.railway.app',
+        'autofleetx-production-c144.up.railway.app', 
         'localhost',
         '127.0.0.1',
     ]
