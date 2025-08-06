@@ -46,10 +46,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    
-    # Cloudinary
-    'cloudinary_storage',
-    'cloudinary',
 ]
 
 AUTH_USER_MODEL = 'main_app.CustomUser'
@@ -65,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'Car_Rental_System.urls'
 
