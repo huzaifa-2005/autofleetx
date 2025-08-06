@@ -91,10 +91,22 @@ if DATABASE_URL:
         DATABASES = {
             'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
         }
-        # Explicitly ensure PostgreSQL is being used
+        # Add ENGINE explicitly for better compatibility
         DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
     except Exception as e:
-        raise ImproperlyConfigured(f"Database configuration error: {e}")
+        # Fallback configuration if DATABASE_URL is corrupted
+        print(f"Database URL error: {e}")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'neondb',
+                'USER': 'neondb_owner',
+                'PASSWORD': 'REMOVED',
+                'HOST': 'ep-lively-morning-a1bsav7f-pooler.ap-southeast-1.aws.neon.tech',
+                'PORT': '5432',
+               
+            }
+        }
 else:
     if DEBUG:
         # Only allow fallback to SQLite during development
