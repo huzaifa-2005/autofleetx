@@ -77,8 +77,8 @@
       <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image" />
       {% else %}
       <img
-        src="{% static 'images/default_car.png' %}"
-        alt="Default Car"
+        src="{% load static %}{% static 'images/default_car.png' %}"
+        alt="No image"
         class="car-image"
       />
       {% endif %}

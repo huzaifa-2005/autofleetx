@@ -1,30 +1,18 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings # Import settings.py from Django
+from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    # Anything starting with /admin/ will go to Django's built-in admin site
-    path('admin/', admin.site.urls),  
-    path('', include('main_app.urls')), 
-    path('accounts/', include('allauth.urls')),  
+    path('admin/', admin.site.urls),
+    path('', include('main_app.urls')),
+    path('accounts/', include('allauth.urls')),  # This was missing in your original
 ]
 
-# this is to serve static files during development
-'''In development mode (DEBUG mode),  
-since we  don't have a separate web server 
-therefore Django temporarily acts like a file server to make development easier.'''
+# Serve media and static files
 if settings.DEBUG:
-    # Development - Django serves media files
-    # Only serve static and media files manually when developing locally -- DEBUG = True.
-    # static is a django helper function to serve static files
-    # static()--it generates a new URL pattern for serving static files during development.
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) # STATIC_URL	URL prefix for static files
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # MEDIA_URL	URL prefix for media files
-    # STATIC_ROOT	Folder where collected static files are stored
-    # MEDIA_ROOT	Folder where uploaded media files are stored
-
-
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # Production - Also serve media files through Django
+    # For production - keep media URLs for Cloudinary routing
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

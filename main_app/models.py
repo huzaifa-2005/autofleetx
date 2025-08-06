@@ -50,6 +50,7 @@ class Car(models.Model):
     model_year = models.PositiveIntegerField(null=True, blank=True)
     available = models.BooleanField(default=True)
     image = models.ImageField(upload_to='car_images/', default='../static/images/default.png')
+    
     vehicle_type = models.CharField(
     max_length=20,
     choices=VEHICLE_TYPE_CHOICES,
