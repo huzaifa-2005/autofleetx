@@ -6,6 +6,7 @@ from django.core.management.utils import get_random_secret_key
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,14 +80,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Car_Rental_System.wsgi.application'
 
-# PostgreSQL Database Configuration
-DATABASE_URL = config("DATABASE_URL", default=None)
-DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-}
 
-# Add ENGINE explicitly for better compatibility
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
+
+
+
+DATABASE_URL = config("DATABASE_URL", default="")
+
+if DATABASE_URL:
+    try:
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+        }
+        # Explicitly ensure PostgreSQL is being used
+        DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
+    except Exception as e:
+        raise ImproperlyConfigured(f"Database configuration error: {e}")
+else:
+    if DEBUG:
+        # Only allow fallback to SQLite during development
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+    else:
+        # If DATABASE_URL is missing in production, crash hard.
+        raise ImproperlyConfigured("DATABASE_URL is not set in production!")
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
