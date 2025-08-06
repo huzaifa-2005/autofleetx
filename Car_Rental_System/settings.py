@@ -9,6 +9,8 @@ import cloudinary.api
 from django.core.exceptions import ImproperlyConfigured
 
 
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
@@ -33,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
+    'cloudinary',
+    
     'django.contrib.staticfiles',
     'main_app',
 
@@ -136,7 +141,14 @@ TIME_ZONE = 'Asia/Karachi'
 USE_I18N = True
 USE_TZ = True
 
+
+
+
+
+
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': config('CLOUDINARY_API_KEY'),
@@ -150,18 +162,14 @@ cloudinary.config(
     secure=True
 )
 
-# Storage Backends - CORRECTED
-
-if DEBUG:
-    MEDIA_URL = '/media/'  # This can stay for URL routing
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# Static files configuration
+# Static files configuration (keep unchanged)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+
 
 
 
