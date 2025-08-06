@@ -8,6 +8,7 @@ import cloudinary.uploader
 import cloudinary.api
 from django.core.exceptions import ImproperlyConfigured
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
