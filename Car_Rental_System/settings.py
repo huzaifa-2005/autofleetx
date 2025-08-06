@@ -105,6 +105,7 @@ if DATABASE_URL:
                 'PASSWORD': 'REMOVED',
                 'HOST': 'ep-lively-morning-a1bsav7f-pooler.ap-southeast-1.aws.neon.tech',
                 'PORT': '5432',
+                
                
             }
         }
