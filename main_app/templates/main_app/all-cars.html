@@ -83,7 +83,7 @@
       />
       {% endif %}
       <div class="car-details">
-        <h2>{{ car.name }}</h2>
+        <h2>{% if car.image %}Yes{% else %}No{% endif %}</h2>
         <div class="brand">
           Brand: <span class="brand-name">{{ car.brand }}</span>
         </div>
