@@ -8,9 +8,6 @@ import cloudinary.uploader
 import cloudinary.api
 from django.core.exceptions import ImproperlyConfigured
 
-
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
@@ -18,7 +15,6 @@ SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
 try:
     ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 except:
-    # Fallback if ALLOWED_HOSTS env var is not set
     ALLOWED_HOSTS = [
         'autofleetx-production-c144.up.railway.app', 
         'localhost',
@@ -27,7 +23,6 @@ except:
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,13 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    # IMPORTANT: Order matters! cloudinary_storage should come BEFORE django.contrib.staticfiles
     'cloudinary_storage',
     'cloudinary',
-    
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # This should come AFTER cloudinary apps
     'main_app',
-
-    # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -52,7 +45,7 @@ AUTH_USER_MODEL = 'main_app.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Move WhiteNoise here
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,8 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-
 
 ROOT_URLCONF = 'Car_Rental_System.urls'
 
@@ -74,7 +65,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # Required by allauth
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -84,10 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Car_Rental_System.wsgi.application'
 
-
-
-
-
+# Database configuration (keeping your existing logic)
 DATABASE_URL = config("DATABASE_URL", default="")
 
 if DATABASE_URL:
@@ -95,10 +83,8 @@ if DATABASE_URL:
         DATABASES = {
             'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
         }
-        # Add ENGINE explicitly for better compatibility
         DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
     except Exception as e:
-        # Fallback configuration if DATABASE_URL is corrupted
         print(f"Database URL error: {e}")
         DATABASES = {
             'default': {
@@ -108,13 +94,10 @@ if DATABASE_URL:
                 'PASSWORD': 'REMOVED',
                 'HOST': 'ep-lively-morning-a1bsav7f-pooler.ap-southeast-1.aws.neon.tech',
                 'PORT': '5432',
-                
-               
             }
         }
 else:
     if DEBUG:
-        # Only allow fallback to SQLite during development
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
@@ -122,10 +105,7 @@ else:
             }
         }
     else:
-        # If DATABASE_URL is missing in production, crash hard.
         raise ImproperlyConfigured("DATABASE_URL is not set in production!")
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -139,20 +119,9 @@ TIME_ZONE = 'Asia/Karachi'
 USE_I18N = True
 USE_TZ = True
 
+# ============ CLOUDINARY CONFIGURATION - FIXED ============
 
-
-
-
-
-
-
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
-}
-
+# Configure Cloudinary first
 cloudinary.config(
     cloud_name=config('CLOUDINARY_CLOUD_NAME'),
     api_key=config('CLOUDINARY_API_KEY'),
@@ -160,28 +129,36 @@ cloudinary.config(
     secure=True
 )
 
-# Media files configuration - THIS WAS MISSING!
+# Cloudinary storage settings
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+# Modern Django way (Django 4.2+) - Use STORAGES instead of DEFAULT_FILE_STORAGE
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+# Fallback for older Django versions
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Media files configuration - ESSENTIAL!
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Set Cloudinary as default storage for media files
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Static files configuration
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-
-
-
-
-
-
-
-
+# ============ REST OF YOUR SETTINGS ============
 
 SITE_ID = 1
 
@@ -223,7 +200,28 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 
-# CSRF trusted origins - fix the configuration
 CSRF_TRUSTED_ORIGINS = [
     'https://autofleetx-production-c144.up.railway.app',
 ]
+
+# ============ DEBUG LOGGING - Add this temporarily ============
+if DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+        },
+        'loggers': {
+            'cloudinary': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': False,
+            },
+        },
+    }

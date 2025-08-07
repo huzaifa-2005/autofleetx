@@ -6,13 +6,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main_app.urls')),
-    path('accounts/', include('allauth.urls')),  # This was missing in your original
+    path('accounts/', include('allauth.urls')),
 ]
 
-# Serve media and static files
+# Media files handling - FIXED VERSION
 if settings.DEBUG:
+    # Development: serve both static and media files locally
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    # For production - keep media URLs for Cloudinary routing
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# NO else clause needed for production!
+# Cloudinary handles media files automatically, no URL routing needed
