@@ -74,9 +74,9 @@
     {% for car in page_obj %}
     <div class="car-card">
       {% if car.image %}
-      <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image" />
+      <img src= "{% static 'images/KIA-MOVE.png'  %}"  alt="{{ car.name }}" class="car-image" /> 
      {% else %}
-      <img
+      <img  
         src="{% load static %}{% static 'images/default_car.png' %}"
         alt="No image"
         class="car-image"
