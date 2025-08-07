@@ -74,12 +74,12 @@
     {% for car in page_obj %}
     <div class="car-card">
       {% if car.image %}
-      <img src="{% url 'car_image' car.image.name|cut:'car_images/' %}" alt="{{ car.name }}">
+      <img src="{% url 'car_image' car.image.name|cut:'car_images/' %}" class="car-img" alt="{{ car.name }}">
      {% else %}
       <img  
         src="{% load static %}{% static 'images/default_car.png' %}"
         alt="No image"
-        class="car-image"
+        class="car-img"
       />
       {% endif %}
       <div class="car-details">

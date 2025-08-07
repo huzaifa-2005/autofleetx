@@ -30,7 +30,7 @@
     <!-- Car Image Section -->
     <div class="car-image">
       {% if car.image %}
-      <img src="{% url 'car_image' car.image.name|cut:'car_images/' %}" alt="{{ car.name }}">
+      <img src="{% url 'car_image' car.image.name|cut:'car_images/' %}" alt="{{ car.name }}" >
       {% else %}
       <img src="{% static 'images/default_car.png' %}" alt="Default Car" />
       {% endif %}
