@@ -701,15 +701,11 @@ body {
 
 /* Car Image */
 .car-image {
-  width: 100%;
-  height: auto;
-  max-height: 140px;
-  object-fit: contain;
-  margin-top: 140px;
-  margin-right: 50px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  width: 100%;          /* or use a fixed value like 300px */
+  height: auto;         /* keeps the image's original aspect ratio */
+  object-fit: cover;    /* trims image to fit if needed */
+  border-radius: 10px;  /* optional: rounded corners */
+  max-height: 200px;   
 }
 
 .car-card:hover .car-image {
@@ -1049,10 +1045,14 @@ body {
 }
 
 
-
-
-
-
+.car-img {
+  width: 190px;         /* Fixed width */
+  height: 130px;        /* Fixed height */
+  object-fit: cover;    /* Fills the box and crops excess */
+  border-radius: 8px;
+  margin-top:8.5rem;
+  margin-left:4.5rem;
+}
 
 
 
