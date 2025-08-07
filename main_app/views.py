@@ -640,6 +640,18 @@ def admin_add_car(request):
         form = AdminCarForm()
     return render(request, 'main_app/admin/add_car.html', {'form': form})
 
+from django.http import FileResponse, Http404
+import os
+from django.conf import settings
+
+def car_image(request, filename):
+    filepath = os.path.join(settings.MEDIA_ROOT, 'car_images', filename)
+    if os.path.exists(filepath):
+        return FileResponse(open(filepath, 'rb'), content_type='image/jpeg')
+    else:
+        raise Http404()
+
+
 @login_required
 @user_passes_test(is_admin)
 def admin_remove_cars(request):   #

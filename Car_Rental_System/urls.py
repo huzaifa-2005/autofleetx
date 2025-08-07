@@ -13,6 +13,6 @@ urlpatterns = [
 if settings.DEBUG:
     # Development: serve both static and media files locally
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  
 # NO else clause needed for production!
 # Cloudinary handles media files automatically, no URL routing needed

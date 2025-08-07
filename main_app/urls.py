@@ -37,6 +37,7 @@ urlpatterns = [
 
     path('dashboard/admin/add-car/', views.admin_add_car, name='admin_add_car'),
     path('dashboard/admin/remove-cars/', views.admin_remove_cars, name='remove_cars'),
+    path('car_images/<str:filename>/', views.car_image, name='car_image'),
 
    
 ]
