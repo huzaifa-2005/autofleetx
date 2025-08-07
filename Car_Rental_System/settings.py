@@ -93,33 +93,9 @@ if DATABASE_URL:
         }
         # Add ENGINE explicitly for better compatibility
         DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
-    except Exception as e:
-        # Fallback configuration if DATABASE_URL is corrupted
-        print(f"Database URL error: {e}")
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': 'neondb',
-                'USER': 'neondb_owner',
-                'PASSWORD': 'REMOVED',
-                'HOST': 'ep-lively-morning-a1bsav7f-pooler.ap-southeast-1.aws.neon.tech',
-                'PORT': '5432',
-                
-               
-            }
-        }
-else:
-    if DEBUG:
-        # Only allow fallback to SQLite during development
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-    else:
-        # If DATABASE_URL is missing in production, crash hard.
-        raise ImproperlyConfigured("DATABASE_URL is not set in production!")
+    except :
+         raise ImproperlyConfigured("DATABASE_URL is not set in production!")
+
 
 
 

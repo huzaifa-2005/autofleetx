@@ -640,13 +640,9 @@ def admin_add_car(request):
         form = AdminCarForm()
     return render(request, 'main_app/admin/add_car.html', {'form': form})
 
-# admin_car_list--for removing car_list_view
-# this view recives both GET and POST requests
-# GET--to show the list of cars 
-# POST--to delete selected cars
 @login_required
 @user_passes_test(is_admin)
-def admin_remove_cars(request):   # for deleting cars from the website
+def admin_remove_cars(request):   #
     if request.method == 'POST':
         car_ids = request.POST.getlist('car_ids')
         deleted_count = 0
