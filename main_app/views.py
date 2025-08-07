@@ -625,14 +625,6 @@ def admin_add_car(request):
         if form.is_valid():
             car = form.save(commit=False)
             car.added_by = request.user
-            
-            # Debug: Check if image is being received
-            if 'image' in request.FILES:
-                print(f"DEBUG: Image file received: {request.FILES['image'].name}")
-                print(f"DEBUG: Image file size: {request.FILES['image'].size}")
-            else:
-                print("DEBUG: No image file received")
-            
             # Save a readable version of name
             if request.user.first_name and request.user.last_name:
                 former_admin_name = f"Former Admin ({request.user.first_name} {request.user.last_name})".strip()
@@ -640,23 +632,13 @@ def admin_add_car(request):
                 former_admin_name = f"Former Admin ({request.user.username})"
             car.former_admin_name = former_admin_name
             car.save()
-            
-            # Debug: Check if image was saved properly
-            if car.image:
-                print(f"DEBUG: Car saved. Image URL: {car.image.url}")
-                print(f"DEBUG: Image name: {car.image.name}")
-            else:
-                print("DEBUG: Car saved but no image associated")
-            
             messages.success(request, f'"{car.name}" added successfully!', extra_tags="car-added-successfully")
             return redirect(f"{reverse('admin_dashboard')}#admin-dashboard-section")
         else:
-            print(f"DEBUG: Form errors: {form.errors}")
             messages.error(request, 'Please correct the errors below.')
     else:
         form = AdminCarForm()
     return render(request, 'main_app/admin/add_car.html', {'form': form})
-
 
 # admin_car_list--for removing car_list_view
 # this view recives both GET and POST requests

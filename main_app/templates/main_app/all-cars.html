@@ -1,7 +1,5 @@
 {% extends "base.html" %} {% load static %}
-<title>
-  {% block title %}Browse Cars for Rent — AutoFleetX 🚕{% endblock %}
-</title>
+<title>{% block title %}Browse Cars for Rent — AutoFleetX 🚕{% endblock %}</title>
 {% block head %}
 
 <link
@@ -9,8 +7,9 @@
   href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
 />
 {% endblock %} {% block extra_css %}
-<link rel="stylesheet" href="{% static 'styles/all-cars.css' %}" />
-{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'styles/all-cars.css' %}">
+{% endblock %}
+{% block content %}
 
 <div class="top">
   <div class="top-content">
@@ -37,16 +36,19 @@
   </div>
 </div>
 
-{% if user.is_superuser %} {% include 'main_app/admin/admin-search-form.html' %}
-{% else %} {% include 'common-search-form.html' %} {% endif %}
+{% if user.is_superuser %}
+{% include 'main_app/admin/admin-search-form.html' %}
+{% else %} 
+{% include 'common-search-form.html' %} 
+{% endif %}
 
 <section id="cars-section">
   <div class="messages">
     <br />
     <br />
     <br />
-    {% for message in messages %} {% if "seating-capacity-error" in message.tags
-    %}
+    {% for message in messages %} 
+    {% if "seating-capacity-error" in message.tags %}
     <div class="alert alert-danger">{{ message }}</div>
     {% elif "rent-per-day-error" in message.tags %}
     <div class="alert alert-success">{{ message }}</div>
@@ -71,56 +73,33 @@
   <div class="car-grid">
     {% for car in page_obj %}
     <div class="car-card">
-      <!-- DEBUG INFO - Remove this after fixing -->
-      <div
-        style="
-          background: #f0f0f0;
-          padding: 5px;
-          font-size: 12px;
-          margin-bottom: 10px;
-        "
-      >
-        <strong>DEBUG INFO:</strong><br />
-        Car ID: {{ car.id }}<br />
-        Has image: {% if car.image %}YES{% else %}NO{% endif %}<br />
-        {% if car.image %} Image name: {{ car.image.name }}<br />
-        Image URL: {{ car.image.url }}<br />
-        {% endif %}
-      </div>
-      <!-- END DEBUG INFO -->
-
       {% if car.image %}
-      <img
-        src="{{ car.image.url }}"
-        alt="{{ car.name }}"
-        class="car-image"
-        onerror="console.log('Image failed to load: {{ car.image.url }}'); this.src='{% load static %}{% static 'images/default_car.png' %}';"
-      />
-      {% else %}
+      <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image" />
+     {% else %}
       <img
         src="{% load static %}{% static 'images/default_car.png' %}"
         alt="No image"
         class="car-image"
       />
       {% endif %}
-
       <div class="car-details">
         <h2>{{ car.name }}</h2>
-        <!-- Rest of your car details -->
         <div class="brand">
           Brand: <span class="brand-name">{{ car.brand }}</span>
         </div>
         <div class="seats">
           <i class="fas fa-user"></i> {{ car.seating_capacity }} seats
-          <span class="vehicle-type">
-            <i class="fa-solid fa-car icon-vehicle"></i>
-            {{car.get_vehicle_type_display}}
-          </span>
+          <span class="vehicle-type"
+            ><i class="fa-solid fa-car icon-vehicle"></i>
+            {{car.get_vehicle_type_display}}</span
+          >
         </div>
         <div class="rent">
           <i class="fas fa-tag"></i> {{ car.rent_per_day}}
           <span class="currency">PKR/DAY</span>
         </div>
+        <!-- {{ car.rent_per_day}} -->
+        <!-- <p><strong>Model Year:</strong> {{ car.model_year }}</p> -->
 
         {% if not car.available %}
         <div
@@ -130,17 +109,9 @@
           Not Available
         </div>
         {% else %} {% if user.is_authenticated %}
-        <a
-          href="{% url 'car_detail' car.id %}#car-details-section"
-          class="rent-button"
-          >Explore</a
-        >
+        <a href="{% url 'car_detail' car.id %}#car-details-section" class="rent-button">Explore</a>
         {% else %}
-        <a
-          href="{% url 'login' %}?next={% url 'car_detail' car_id=car.id %}#car-details-section"
-          class="rent-button"
-          >Login to Rent</a
-        >
+        <a href="{% url 'login' %}?next={% url 'car_detail' car_id=car.id %}#car-details-section" class="rent-button" >Login to Rent</a>
         {% endif %} {% endif %}
       </div>
     </div>
@@ -178,34 +149,34 @@
 </div>
 
 <div class="back-to-home">
-  <a href="{% url 'all-cars' scroll_to_section=1 %}" class="back-link"
-    >&larr; All Fleets</a
-  >
+  <a href="{% url 'all-cars' scroll_to_section=1 %}" class="back-link">&larr; All Fleets</a>
 </div>
 
-<div id="logoutModal" class="modal-overlay">
-  <div class="modal-box">
-    <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
-      <form method="POST" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn-confirm">Yes, Logout</button>
-      </form>
-      <button type="button" onclick="closeLogoutModal()" class="btn-cancel">
-        Cancel
-      </button>
+
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-actions">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Logout</button>
+          </form>
+          <button type="button" onclick="closeLogoutModal()" class="btn-cancel">
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<script>
-  function confirmLogout() {
-    document.getElementById("logoutModal").style.display = "flex";
-  }
+    <script>
+      function confirmLogout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
 
-  function closeLogoutModal() {
-    document.getElementById("logoutModal").style.display = "none";
-  }
-</script>
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+    </script>
+
 
 {% endblock %}
