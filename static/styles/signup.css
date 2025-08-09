@@ -178,45 +178,96 @@ form textarea {
 }
 
 
+/* ---------------------------------
+   ✅ Mobile Responsiveness Queries
+   --------------------------------- */
 
-
-
-
-/* Responsive */
-@media (max-width: 480px) {
-  .form-container {
-    padding: 20px 15px;
+/* Devices: Tablets and smaller (≤ 768px) */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
   }
 
   .branding {
-    margin-bottom: 16px; /* further reduced on mobile */
+    margin: 0 auto 20px auto;
+    padding: 0 10px;
+    text-align: center;
   }
 
   .branding h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
-  .form-container h2 {
+  .branding p {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 90%;
+    padding: 20px 18px;
+  }
+
+  button[type="submit"],
+  .google-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .form-footer p,
+  .form-footer a,
+  .login-divider {
+    font-size: 0.85rem;
+  }
+
+  .alert {
+    font-size: 0.9rem;
+  }
+}
+
+/* Devices: Phones (≤ 480px) */
+@media (max-width: 480px) {
+  .branding h1 {
     font-size: 1.5rem;
   }
 
+  .branding p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .form-container h2 {
+    font-size: 1.4rem;
+  }
+
+  form input,
+  form textarea {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .google-btn,
   button[type="submit"] {
-    font-size: 0.95rem;
-    padding: 12px 25px;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .form-footer {
+    margin-top: 10px;
+  }
+
+  .login-divider {
+    margin: 10px 0;
+  }
+
+  .alert {
+    padding: 10px 12px;
+    font-size: 0.85rem;
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .branding {
-    margin-top: -15%;
-    margin-left: -3%;
-  }
-}
 
-@media (max-width: 480px) {
-  .branding {
-    margin-top: -8%;
-    margin-left: -2%;
-  }
-}
+

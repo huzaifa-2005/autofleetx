@@ -206,39 +206,93 @@ button[type="submit"]:hover {
   box-shadow: 0 4px 12px rgba(56, 142, 60, 0.2);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .form-container {
-    padding: 20px 15px;
+/* ---------------------------------
+   ✅ Mobile Responsiveness Queries
+   --------------------------------- */
+
+/* Devices: Tablets and smaller (≤ 768px) */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .branding {
+    margin: 0 auto 20px auto;
+    padding: 0 10px;
+    text-align: center;
   }
 
   .branding h1 {
     font-size: 1.8rem;
   }
 
+  .branding p {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 90%;
+    padding: 20px 18px;
+  }
+
+  button[type="submit"],
+  .google-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .form-footer p,
+  .form-footer a,
+  .login-divider {
+    font-size: 0.85rem;
+  }
+
+  .alert {
+    font-size: 0.9rem;
+  }
+}
+
+/* Devices: Phones (≤ 480px) */
+@media (max-width: 480px) {
+  .branding h1 {
+    font-size: 1.5rem;
+  }
+
+  .branding p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
   .form-container h2 {
     font-size: 1.4rem;
   }
 
+  form input,
+  form textarea {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .google-btn,
   button[type="submit"] {
     font-size: 0.9rem;
-    padding: 10px 22px;
+    padding: 10px;
   }
 
-  .google-btn {
-    font-size: 0.9rem;
-    padding: 9px 22px;
+  .form-footer {
+    margin-top: 10px;
   }
-}
-.back-to-home {
-  display: inline-block;
-  margin-top: 16px;
-  color: #388e3c;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
 
-.back-to-home:hover {
-  color: #f57c00;
+  .login-divider {
+    margin: 10px 0;
+  }
+
+  .alert {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
 }
