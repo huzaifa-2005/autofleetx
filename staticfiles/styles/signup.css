@@ -184,6 +184,11 @@ form textarea {
 
 /* Devices: Tablets and smaller (≤ 768px) */
 @media (max-width: 768px) {
+
+
+  .helptext{
+    display: none;
+  }
   body {
     flex-direction: column;
     padding: 10px;
@@ -230,6 +235,9 @@ form textarea {
 
 /* Devices: Phones (≤ 480px) */
 @media (max-width: 480px) {
+    .helptext{
+    display: none;
+  }
   .branding h1 {
     font-size: 1.5rem;
   }
