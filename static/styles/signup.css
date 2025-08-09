@@ -42,7 +42,7 @@ body {
 .form-container {
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 12px;
+  border-radius: 18px;
   padding: 25px 55px;
   max-width: 420px;
   width: 100%;
@@ -205,6 +205,7 @@ form textarea {
   }
 
   .branding p {
+    margin-top: 1rem;
     font-size: 0.9rem;
     max-width: 100%;
   }

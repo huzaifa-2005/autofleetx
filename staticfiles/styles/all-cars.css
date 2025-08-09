@@ -1046,12 +1046,12 @@ body {
 
 
 .car-img {
-  width: 190px;         /* Fixed width */
+  width: 220px;         /* Fixed width */
   height: 130px;        /* Fixed height */
   object-fit: cover;    /* Fills the box and crops excess */
   border-radius: 8px;
   margin-top:8.5rem;
-  margin-left:4.5rem;
+  margin-left:2.5rem;
 }
 
 

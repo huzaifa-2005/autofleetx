@@ -349,4 +349,14 @@ body {
   .newsletter-form button {
     border-radius: 0 0 12px 12px;
   }
-}
+  .footer-section h3{
+    margin-left: 0.1rem;
+    padding-top: 1rem;
+  }
+  .footer-links{
+    margin-left: -2.2rem;
+  }
+  .social-links{
+    margin-top: 0.25rem;
+  }
+ }
