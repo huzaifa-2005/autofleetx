@@ -190,7 +190,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
    🔹User Rental History  
 </p>
-<img src="static\screenshots\rental-history.png" height=1350px width=550px >
+<img src="static\screenshots\rental-history.png" height=1750px width=550px >
 </td> 
 <td width="50%">
 <br>
@@ -216,7 +216,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
  🔹Confirmation Email
 </p>
-<img src="static\screenshots\email.png" height=450px width=550px >  
+<img src="static\screenshots\email.png" height=380px width=550px >  
 </td>
 </table>
 
