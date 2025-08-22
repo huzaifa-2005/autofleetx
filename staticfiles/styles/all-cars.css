@@ -646,8 +646,8 @@ body {
   top: -50px;
   margin-bottom: 45px;
   margin-left: 50px;
-  max-width: 580px;
-  width: 100%;
+  max-width: 530px;
+  width: 85%;
   min-height: 50px;
 }
 @keyframes fadeInGrid {
@@ -1054,9 +1054,13 @@ body {
   margin-left:2.5rem;
 }
 
+.newsletter-form{
+  margin-left: -0.4rem;
+}
 
-
-
+.newsletter p{
+  margin-left: -0.4rem;
+}
 /* Mobile Responsive Design */
 
 
@@ -1239,6 +1243,13 @@ body {
     bottom: -5px;
     font-size: 1.5rem;
   }
+  .messages {
+    padding: 5px 0; 
+    width: 100%;
+    max-width: 800px;
+    margin-left: 1.4rem;
+  }
+  
 }
 
 
@@ -1260,6 +1271,9 @@ body {
   .admin-top-text p {
     word-break: break-word;
     font-size: clamp(1.5rem, 5vw, 2.2rem);
+  }
+  .footer-links{
+    margin-left: -0.3rem;
   }
 }
 

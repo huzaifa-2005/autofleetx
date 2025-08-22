@@ -45,6 +45,7 @@ body {
   font-size: 14px;
   color: #333;
   transition: border-color 0.3s, box-shadow 0.3s;
+  resize: none;
 }
 
 .contact-form input::placeholder,

@@ -152,22 +152,8 @@ body {
         padding: 12px 10px;
     }
 
-    .btn-download {
-        font-size: 15px;
-        padding: 10px 20px;
-    }
+    
 
-    .btn-download i,
-    .back-link i {
-        font-size: 16px;
-    }
-
-    .back-link {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 576px) {
     .report-table thead {
         display: none;
     }
@@ -210,16 +196,9 @@ body {
         font-size: 24px;
     }
 
-    .btn-download {
-        width: 100%;
-        justify-content: center;
-    }
 
-    .back-link {
-        font-size: 13.5px;
-    }
-}
-@media (max-width: 768px) {
+
+    
     .report-container {
         padding: 30px 20px;
         margin: 30px 15px;
@@ -234,23 +213,9 @@ body {
         font-size: 14px;
         padding: 12px 10px;
     }
+    
 
-    .btn-download {
-        font-size: 15px;
-        padding: 10px 20px;
-    }
 
-    .btn-download i,
-    .back-link i {
-        font-size: 16px;
-    }
-
-    .back-link {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 576px) {
     .report-table thead {
         display: none;
     }
@@ -293,25 +258,32 @@ body {
         font-size: 24px;
     }
 
-    .action-btn-container {
-        padding: 0 10px;
-    }
 
-    .btn-download {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 18px;
-        font-size: 14.5px;
+
+
+    .btn-download i,
+    .back-link i {
+        font-size: 16px;
     }
 
     .back-link {
-        font-size: 13.5px;
+        font-size: 14px;
     }
-}
-
-@media (max-width: 400px) {
     .btn-download {
         padding: 8px 14px;
         font-size: 13.5px;
+        width: 100%;
+        justify-content: center;
     }
+
+
+   
+.action-btn-container {
+    display: flex;
+    justify-content: center;
+    
+  }
+    
+
+
 }

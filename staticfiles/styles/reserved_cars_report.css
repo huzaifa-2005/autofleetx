@@ -106,8 +106,14 @@ body {
 }
 
 .back-link:hover {
-    color: #00223d;
+    color: #02121f;
+    font-weight: 600;
 }
+
+.download-btn i {
+        font-size: 16px;
+        margin-right: 0.4rem;
+    }
 @media (max-width: 768px) {
   .report-table-wrapper {
     overflow-x: auto;
@@ -127,16 +133,25 @@ body {
     text-align: left;
   }
 
+.download-btn {
+    padding: 8px 14px;
+    font-size: 13.5px;
+    width: 100%;
+    justify-content: center;
+  }
   .button-wrapper {
-    text-align: center;
-    margin-top: 16px;
+    display: flex;
+    justify-content: center;
   }
 
-  .download-btn {
-    display: inline-block;
-    padding: 10px 16px;
-    font-size: 14px;
-  }
+
+.download-btn i {
+        font-size: 16px;
+        margin-right: 0.4rem;
+    }
+
+   
+  
 
   .back-link-wrapper {
     text-align: center;

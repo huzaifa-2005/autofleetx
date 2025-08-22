@@ -18,7 +18,15 @@ body {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 18px rgba(0.4, 0.4, 0.4, 0.2);
+  transition: ease-in-out 0.3s;
+}
+
+.history-container:hover {
+  
+  background-color: whitesmoke;
+
+  
 }
 
 .history-container h2 {
