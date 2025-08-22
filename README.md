@@ -68,7 +68,7 @@ It offers **real-time car rental management**, **secure authentication (Google l
 
 ## 🚀 Getting Started
 
-```bash
+
 1. Clone the Repository
 git clone https://github.com/your-username/AutoFleetX.git
 cd AutoFleetX
