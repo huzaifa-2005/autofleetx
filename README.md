@@ -197,7 +197,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
  🔹Admin Interface
 </p>
-<img src="static\screenshots\admin-browse.png" height=490px width=550px >  
+<img src="static\screenshots\admin-browse.png" height=590px width=550px >  
 </td>
 </table>
 
@@ -216,7 +216,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
  🔹Confirmation Email
 </p>
-<img src="static\screenshots\email.png" height=420px width=550px >  
+<img src="static\screenshots\email.png" height=450px width=550px >  
 </td>
 </table>
 
