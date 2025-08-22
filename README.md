@@ -68,7 +68,7 @@ It offers **real-time car rental management**, **secure authentication (Google l
 
 ## 🚀 Getting Started
 
-
+```bash
 1. Clone the Repository
 git clone https://github.com/your-username/AutoFleetX.git
 cd AutoFleetX
@@ -96,7 +96,7 @@ python manage.py runserver
 
 Visit http://127.0.0.1:8000/
  in your browser.
-
+```  
 🧑‍💻 Usage
 
 Users: Sign up or log in with Google, browse cars, rent, and manage their rentals & wallet.
