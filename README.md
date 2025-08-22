@@ -107,8 +107,23 @@ Email Confirmations: Automatic confirmation email sent upon rental success.
 
 📸 Screenshots
 
-Add screenshots of your frontend (homepage, car listings, profile, admin dashboard).
-(You can later upload .png/.jpg in a screenshots/ folder and link them here.)
+### App Preview :
+
+<table width="100%"> 
+<tr>
+<td width="50%">      
+&nbsp; 
+<br>
+<p align="center">
+   🔹Landing Page For Users  
+</p>
+<img src="static\screenshots\landing.png" height=690px width=550px >
+</td> 
+<td width="50%">
+<br>
+<p align="center">
+ 
+
 
 🔑 Key Highlights
 
