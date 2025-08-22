@@ -69,7 +69,7 @@ It offers **real-time car rental management**, **secure authentication (Google l
 ```bash
 AutoFleetX/
 ├── api/                # API app (REST endpoints)
-├── Cac_RemixSystem/    # Django project config
+├── Car_Rental_System/    # Django project config
 ├── main_app/           # Main business logic app
 ├── media/              # User-uploaded files
 ├── static/             # Static assets (CSS, JS, images)
