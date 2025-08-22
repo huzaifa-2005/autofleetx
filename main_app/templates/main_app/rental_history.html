@@ -22,26 +22,26 @@
         <div class="message" >
             {% if messages %}
             {% for message in messages %}
-                {% if "rental-success-minutes-days" in message.tags %}
+                {% if "rental-success" in message.tags %}
                     <div class="alert alert-success">{{ message }}</div>
                 {% endif %}
             {% endfor %}
             {% endif %}
         </div>
-        <div class="message" >
+        <div class="email-msg" >
             {% if messages %}
             {% for message in messages %}
-                {% if "rental-success-days" in message.tags %}
-                    <div class="alert alert-success">{{ message }}</div>
+                {% if "email-info" in message.tags %}
+                    <div class="alert email-success">{{ message }}</div>
                 {% endif %}
             {% endfor %}
             {% endif %}
         </div>
-        <div class="message" >
+        <div class="email-msg" >
             {% if messages %}
             {% for message in messages %}
-                {% if "rental-success-minutes" in message.tags %}
-                    <div class="alert alert-success">{{ message }}</div>
+                {% if "email-warning" in message.tags %}
+                    <div class="alert alert-warning">{{ message }}</div>
                 {% endif %}
             {% endfor %}
             {% endif %}

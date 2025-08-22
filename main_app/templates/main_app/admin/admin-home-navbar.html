@@ -40,10 +40,11 @@
             </button>
 
 
-            <div class="nav-buttons" id="mobileMenu" >
-              <button onclick="confirmLogout()"  ><i class="fas fa-right-to-bracket"></i> Logout</button>
-              <button onclick="window.location.href='{% url 'admin_contact_messages' %}#user-messages-section'"> <i class="fas fa-comment-dots"></i>User Messages</button>
-              <button onclick="window.location.href='{% url 'admin:index' %}'">📈Admin Panel</button>
+            <div class="nav-buttons" id="mobileMenu" >  
+              <button onclick="window.location.href='{% url 'admin_dashboard' %}#admin-dashboard-section'"><i class="fas fa-sliders-h"></i>Dashboard</button>
+              <button onclick="window.location.href='{% url 'admin_contact_messages' %}#user-messages-section'"><i class="fas fa-comment-dots"></i>Feedback</button>
+              <button onclick="window.location.href='{% url 'admin:index' %}'"><i class="fa-solid fa-table-columns"></i>Admin Panel</button>
+              <button onclick="confirmLogout()" class="logout-button" ><i class="fas fa-right-to-bracket"></i>Logout</button> 
             </div>
           </div>
         </div>

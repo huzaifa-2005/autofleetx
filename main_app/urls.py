@@ -38,6 +38,9 @@ urlpatterns = [
     path('dashboard/admin/add-car/', views.admin_add_car, name='admin_add_car'),
     path('dashboard/admin/remove-cars/', views.admin_remove_cars, name='remove_cars'),
     path('car_images/<str:filename>/', views.car_image, name='car_image'),
+    path('link-google/', views.link_google, name='link_google'),
+    path('link-google/callback/', views.link_google_callback, name='link_google_callback'),
+    path('password-manage/', views.manage_password, name='pass-manager'),
 
    
-]
+]  

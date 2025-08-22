@@ -1,138 +1,165 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Your AutoFleetX Account 🚕</title>
-  <link rel="stylesheet" href="{% static 'styles/signup.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon" />
-</head>
-<body>
-
-  <div class="branding">
-    <h1><i class="fas fa-car"></i> Join AutoFleetX</h1>
-    <p class="signup-para" >Start your journey with us! Create your account and unlock access to premium vehicles, seamless booking, and exclusive member benefits.</p>
-  </div>
-
-  <div class="form-container">
-    <h2><i class="fas fa-user-plus" style="margin-right: 10px; color: #667eea;"></i>Create Account</h2>
-
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}exclamation-circle{% else %}info-circle{% endif %}" style="margin-right: 8px;"></i>
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-
-    <form method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-
-      <div class="button-wrapper">
-        <button type="submit">
-          <i class="fas fa-rocket" style="margin-right: 8px;"></i>
-          <span>Create Account</span>
-        </button>
-      </div>
-    </form>
-
-    <div class="form-footer">
-      <p>Already have an account? <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login Here</a></p>
-      <a href="{% url 'home' %}"><i class="fas fa-arrow-left" style="margin-right: 5px;"></i>Back to Home</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Your AutoFleetX Account 🚕</title>
+    <link rel="stylesheet" href="{% static 'styles/signup.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{% static 'images/fav-icon.png' %}"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="branding">
+      <h1><i class="fas fa-car"></i> Join AutoFleetX</h1>
+      <p class="signup-para">
+        Start your journey with us! Create your account and unlock access to
+        premium vehicles, seamless booking, and exclusive member benefits.
+      </p>
     </div>
-  </div>
 
-  <script>
-    // Add interactive enhancements
-    document.addEventListener('DOMContentLoaded', function() {
-      // Enhanced form validation feedback
-      const inputs = document.querySelectorAll('input, textarea');
-      inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-          this.parentElement.style.transform = 'scale(1.02)';
-          this.parentElement.style.transition = 'transform 0.2s ease';
-          
-          // Add floating label effect
-          const label = this.parentElement.querySelector('label');
-          if (label) {
-            label.style.color = '#667eea';
-            label.style.transform = 'translateY(-2px)';
-            label.style.transition = 'all 0.2s ease';
-          }
+    <div class="form-container">
+      <h2>
+        <i
+          class="fas fa-user-plus"
+          style="margin-right: 10px; color: #667eea"
+        ></i
+        >Create Account
+      </h2>
+
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        <i
+          class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}exclamation-circle{% else %}info-circle{% endif %}"
+          style="margin-right: 8px"
+        ></i>
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %}
+
+      <form method="POST">
+        {% csrf_token %} {{ form.as_p }}
+
+        <div class="button-wrapper">
+          <button type="submit">
+            <i class="fas fa-rocket" style="margin-right: 8px"></i>
+            <span>Create Account</span>
+          </button>
+        </div>
+      </form>
+
+      <div class="form-footer">
+        <p>
+          Already have an account?
+          <a href="{% url 'login' %}"
+            ><i class="fas fa-sign-in-alt" style="margin-right: 5px"></i>Login
+            Here</a
+          >
+        </p>
+        <a href="{% url 'home' %}"
+          ><i class="fas fa-arrow-left" style="margin-right: 5px"></i>Back to
+          Home</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // Add interactive enhancements
+      document.addEventListener("DOMContentLoaded", function () {
+        // Enhanced form validation feedback
+        const inputs = document.querySelectorAll("input, textarea");
+        inputs.forEach((input) => {
+          input.addEventListener("focus", function () {
+            this.parentElement.style.transform = "scale(1.02)";
+            this.parentElement.style.transition = "transform 0.2s ease";
+
+            // Add floating label effect
+            const label = this.parentElement.querySelector("label");
+            if (label) {
+              label.style.color = "#667eea";
+              label.style.transform = "translateY(-2px)";
+              label.style.transition = "all 0.2s ease";
+            }
+          });
+
+          input.addEventListener("blur", function () {
+            this.parentElement.style.transform = "scale(1)";
+
+            // Reset label
+            const label = this.parentElement.querySelector("label");
+            if (label) {
+              label.style.color = "#34495e";
+              label.style.transform = "translateY(0)";
+            }
+          });
+
+          // Real-time validation feedback
+          input.addEventListener("input", function () {
+            if (this.value.length > 0) {
+              this.style.borderColor = "#27ae60";
+              this.style.background = "rgba(39, 174, 96, 0.05)";
+            } else {
+              this.style.borderColor = "#e1e8ed";
+              this.style.background = "#fafbfc";
+            }
+          });
         });
-        
-        input.addEventListener('blur', function() {
-          this.parentElement.style.transform = 'scale(1)';
-          
-          // Reset label
-          const label = this.parentElement.querySelector('label');
-          if (label) {
-            label.style.color = '#34495e';
-            label.style.transform = 'translateY(0)';
-          }
+
+        // Enhanced button interaction
+        const button = document.querySelector('button[type="submit"]');
+        button.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-3px) scale(1.05)";
         });
 
-        // Real-time validation feedback
-        input.addEventListener('input', function() {
-          if (this.value.length > 0) {
-            this.style.borderColor = '#27ae60';
-            this.style.background = 'rgba(39, 174, 96, 0.05)';
-          } else {
-            this.style.borderColor = '#e1e8ed';
-            this.style.background = '#fafbfc';
-          }
+        button.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(-3px) scale(1)";
         });
-      });
 
-      // Enhanced button interaction
-      const button = document.querySelector('button[type="submit"]');
-      button.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-3px) scale(1.05)';
-      });
-      
-      button.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(-3px) scale(1)';
-      });
+        button.addEventListener("click", function (e) {
+          // Ripple effect
+          let ripple = document.createElement("span");
+          ripple.style.position = "absolute";
+          ripple.style.borderRadius = "50%";
+          ripple.style.background = "rgba(255,255,255,0.6)";
+          ripple.style.transform = "scale(0)";
+          ripple.style.animation = "ripple 0.6s linear";
+          ripple.style.left = e.clientX - this.offsetLeft - 10 + "px";
+          ripple.style.top = e.clientY - this.offsetTop - 10 + "px";
+          ripple.style.width = ripple.style.height = "20px";
 
-      button.addEventListener('click', function(e) {
-        // Ripple effect
-        let ripple = document.createElement('span');
-        ripple.style.position = 'absolute';
-        ripple.style.borderRadius = '50%';
-        ripple.style.background = 'rgba(255,255,255,0.6)';
-        ripple.style.transform = 'scale(0)';
-        ripple.style.animation = 'ripple 0.6s linear';
-        ripple.style.left = e.clientX - this.offsetLeft - 10 + 'px';
-        ripple.style.top = e.clientY - this.offsetTop - 10 + 'px';
-        ripple.style.width = ripple.style.height = '20px';
-        
-        this.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 600);
-      });
+          this.appendChild(ripple);
 
-      // Add progressive enhancement
-      const formContainer = document.querySelector('.form-container');
-      let observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.animation = 'slideInUp 0.8s ease-out';
-          }
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
         });
-      });
-      observer.observe(formContainer);
-    });
 
-    // Add CSS for enhanced animations
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add progressive enhancement
+        const formContainer = document.querySelector(".form-container");
+        let observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.animation = "slideInUp 0.8s ease-out";
+            }
+          });
+        });
+        observer.observe(formContainer);
+      });
+
+      // Add CSS for enhanced animations
+      const style = document.createElement("style");
+      style.textContent = `
       @keyframes ripple {
         to {
           transform: scale(4);
@@ -149,8 +176,54 @@
         animation: none;
       }
     `;
-    document.head.appendChild(style);
-  </script>
+      document.head.appendChild(style);
+    </script>
 
-</body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Select all password fields on the page
+        const passwordFields = document.querySelectorAll(
+          'input[type="password"]'
+        );
+
+        passwordFields.forEach(function (passwordField) {
+          // Create wrapper
+          const wrapper = document.createElement("div");
+          wrapper.style.position = "relative";
+          wrapper.style.display = "inline-block";
+          wrapper.style.width = "100%";
+
+          // Insert wrapper before password field and move password field inside
+          passwordField.parentNode.insertBefore(wrapper, passwordField);
+          wrapper.appendChild(passwordField);
+
+          // Create eye icon
+          const eyeIcon = document.createElement("i");
+          eyeIcon.className = "fas fa-eye-slash"; // Font Awesome
+          eyeIcon.style.position = "absolute";
+          eyeIcon.style.right = "10px";
+          eyeIcon.style.top = "50%";
+          eyeIcon.style.transform = "translateY(-50%)";
+          eyeIcon.style.cursor = "pointer";
+          eyeIcon.style.color = "gray";
+
+          // Add icon to wrapper
+          wrapper.appendChild(eyeIcon);
+
+          // Toggle logic for this specific field
+          eyeIcon.addEventListener("click", function () {
+            if (passwordField.type === "password") {
+              passwordField.type = "text";
+              eyeIcon.classList.remove("fa-eye-slash");
+              eyeIcon.classList.add("fa-eye");
+            } else {
+              passwordField.type = "password";
+              eyeIcon.classList.remove("fa-eye");
+              eyeIcon.classList.add("fa-eye-slash");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

@@ -32,28 +32,67 @@
           </div>
         </div>
         <div class="right-content">
-            <button class="hamburger" onclick="toggleMobileMenu()" type="button" aria-label="Toggle menu">
-              <i class="fas fa-bars"></i>
-            </button>
+          <button
+            class="hamburger"
+            onclick="toggleMobileMenu()"
+            type="button"
+            aria-label="Toggle menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
 
-            <!-- NAV BUTTONS HERE -->
-            <div class="nav-buttons" id="mobileMenu">
-              {% if user.is_authenticated %}
-              <button onclick="confirmLogout()">
-                <i class="fas fa-right-to-bracket"></i> Logout
-              </button>
+          <!-- NAV BUTTONS HERE -->
+          <div class="nav-buttons" id="mobileMenu">
+            {% if not user.is_authenticated %} 
+            <button onclick="window.location.href='{% url 'contact_us' %}#contact-form'" >
+            
+              <i class="fas fa-comment-dots"></i> Contact Us
+            </button>
+            <button
+              onclick="window.location.href='{% url 'home' %}#overview-fleets'"
+            >
+              <i class="fas fa-car"></i> Overview
+            </button>
+            <button onclick="window.location.href='{% url 'login' %}'"  class="logout-button" >
+              <i class="fas fa-right-to-bracket"></i> Login
+            </button>
+            {% endif %} 
+
+
+   
+            {% if user.is_authenticated %}
+            <button
+              onclick="window.location.href='{% url 'home' %}#overview-fleets'"
+            >
+              <i class="fas fa-car"></i> Overview
+            </button> 
+            <button
+              onclick="window.location.href='{% url 'contact_us' %}#contact-form'"
+            >
+              <i class="fas fa-comment-dots"></i> Contact Us
+            </button>
+            {% if not user.is_superuser and not user.email %}
+            <button onclick="window.location.href='{% url 'link_google' %}'"   >
+              <i class="fab fa-google"></i> Connect Google
+            </button>
+            {% elif user.email %}
+              {% if not user.has_usable_password %}
+                <button onclick="window.location.href='{% url 'pass-manager' %}'" class="set-password-btn">
+                   <i class="fas fa-key"></i> Set Password
+                </button>
               {% else %}
-              <button onclick="window.location.href='{% url 'login' %}'">
-                <i class="fas fa-right-to-bracket"></i> Login
-              </button>
-              {% endif %}
-              <button onclick="window.location.href='{% url 'contact_us' %}#contact-form'">
-                <i class="fas fa-comment-dots"></i> Contact Us
-              </button>
-              <button onclick="window.location.href='{% url 'home' %}#overview-fleets'">
-                <i class="fas fa-car"></i> Overview
-              </button>
-            </div>
+                <button onclick="window.location.href='{% url 'profile' %}#profile-section' " >
+                    👤︎ User Profile
+                </button>  
+              {% endif %}  
+            {% endif %}
+            <button onclick="confirmLogout()" class="logout-button">
+              <i class="fas fa-right-to-bracket"></i> Logout
+            </button>
+            
+            
+            {% endif %}
+          </div>
         </div>
 
         <!-- right-content ended -->
@@ -82,11 +121,43 @@
         document.getElementById("logoutModal").style.display = "none";
       }
       function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        menu.classList.toggle('show');
+        const menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("show");
       }
     </script>
+    {% for message in messages %} 
+
+    {% if "account-created" in message.tags %}
+
+    <div class="alert alert-success">{{ message }}</div>
+
+    {% elif "google-linked" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+
+    {% elif "google-linked-failed" in message.tags %}
+    <div class="alert alert-error">{{ message }}</div>  
+
+    {% elif "email-required" in message.tags %} 
+    <div class="alert alert-error">{{ message }}</div>  
+
+    {% elif "invalid-signup" in message.tags %} 
+    <div class="alert alert-error">{{ message }}</div> 
+
+    {% elif "pass-created" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>
+
+    {% elif "password-setting-failed" in message.tags %}
+    <div class="alert alert-error">{{ message }}</div> 
+
+    {% elif "pass-changed" in message.tags %}
+    <div class="alert alert-success">{{ message }}</div>  
+
+    {% endif %} 
+
+    {% endfor %}
     <div class="fleets-container">
+       
+
       <button
         class="our-fleets-btn"
         onclick="window.location.href='{% url 'all-cars' scroll_to_section=0 %}'"
@@ -94,13 +165,9 @@
         <i class="fas fa-bars"></i> Our Fleets
       </button>
 
-      {% for message in messages %} {% if "account-created" in message.tags %}
-      <div class="alert alert-success">{{ message }}</div>
-      {% endif %} {% endfor %}
+      
     </div>
 
     {% include 'common-search-form.html' %}
-
-    
   </body>
 </html>

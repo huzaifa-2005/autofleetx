@@ -103,7 +103,7 @@ form input {
   border-radius: 8px;
   font-size: 1rem;
   background: #f9f9f9;
-   resize: none;
+  resize: none;
 }
 
 form input:focus,

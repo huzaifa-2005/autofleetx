@@ -20,86 +20,111 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% include 'common-search-form.html' %}
 {% endif %}
 
-<section id="profile-section">
-  <br>
-  <div class="profile-container">
-    <div class="message">
-      {% if messages %}
+
+<section id="profile-section">    
+  <div class="message">
+      {% if messages %}  
         {% for message in messages %}
-          {% if "address-updated" in message.tags or "amount-added-to-wallet" in message.tags or "returned-by-user" in message.tags %}
+          {% if "profile-updated" in message.tags or "amount-added-to-wallet" in message.tags or "returned-by-user" in message.tags %}
             <div class="alert alert-success">{{ message }}</div>
-          {% elif not user.address or "address-required" in message.tags or "address-empty" in message.tags %}
-               <div class="alert alert-warning">{{ message }}</div>
+          {% elif  "address-required" in message.tags or "error-message" in message.tags or "empty-profile" in message.tags or "no-changes" in message.tags or "profile-invalid" in message.tags %}
+            <div class="alert alert-warning">{{ message }}</div>
           {% endif %}
         {% endfor %}
       {% endif %}
-    </div>
-    <br>
+  </div>
+  <div class="profile-container">
     <h2 class="profile-heading">
       {% if user.is_superuser %}Admin Profile{% else %}My Profile{% endif %}
     </h2>
 
-    
-
+    <!-- Profile Information -->
     <div class="profile-info">
-      {% if user.is_superuser %}
-        <div class="profile-row"><span class="label">Admin</span><span class="value"><span class="label-colon">:</span>{{ user.username }}</span></div>
-        <div class="profile-row"><span class="label">Balance</span><span class="value"><span class="label-colon">:</span>{{ user.balance }}</span></div>
-      {% else %}
-        <div class="profile-row"><span class="label">Username</span><span class="value"><span class="label-colon">:</span>{{ user.username }}</span></div>
-        <div class="profile-row"><span class="label">First Name</span><span class="value"><span class="label-colon">:</span>{{ user.first_name }}</span></div>
-        <div class="profile-row"><span class="label">Last Name</span><span class="value"><span class="label-colon">:</span>{{ user.last_name }}</span></div>
-        <div class="profile-row"><span class="label">Balance</span><span class="value"><span class="label-colon">:</span>{{ user.balance }}</span></div>
-      {% endif %}
+      <div class="profile-form" >
+        <label>Email</label>
+          {{ profile_form.email }}
+      </div>
+      <form method="POST" action="{% url 'profile' %}" class="profile-form">
+        {% csrf_token %}
+        
+        {% if user.is_superuser %}
+          
+
+          <label>Admin Username</label>
+          {{ profile_form.username }}
+
+          <label>First Name</label>
+          {{ profile_form.first_name }}
+
+          <label>Last Name</label>
+          {{ profile_form.last_name }}
+
+          <label>Admin Account Balance</label>
+          {{ profile_form.balance }}
+
+          <label>Main Branch Address</label>
+          {{ profile_form.address }}
+        {% else %}
+          
+
+          <label>Username</label>
+          {{ profile_form.username }}
+
+          <label>First Name</label>
+          {{ profile_form.first_name }}
+
+          <label>Last Name</label>
+          {{ profile_form.last_name }}
+
+          <label>Account Balance</label>
+          {{ profile_form.balance }}
+
+          <label>Address</label>
+          {{ profile_form.address }}
+        {% endif %}
+
+        <button type="submit" name="profile_info_submit" class="btn-primary">
+          <i class="fas fa-save"></i> Save
+        </button>
+      </form>
     </div>
 
-    {% if not user.is_superuser %}
-    <form method="POST" action="{% url 'profile' %}" class="address-form">
-      {% csrf_token %}
-      <label for="id_address" class="address-heading">Your Address</label>
-      {{ profile_form.address }}
-      <button type="submit" name="address_submit" class="address user-btn-primary">
-        <i class="fas fa-save"></i> Save Address
-      </button>
-    </form>
-    {% endif %}
-
-    <hr class="divider">
-
-    <h3 class="section-subheading">Add Money to Balance</h3>
-
+    <!-- Add Balance Form -->
     <form method="POST" class="balance-form" action="{% url 'profile' %}">
       {% csrf_token %}
-      {{ form.as_p }}
-      {% if user.is_superuser %}
-        <div class="form-submit">
-          <button name="balance_submit" type="submit" class="btn btn-primary">
-            <i class="fas fa-wallet"></i> Add Balance
-          </button>
-        </div>
-      {% else %}
-        <div class="user-form-submit">
-          <button name="balance_submit" type="submit" class="btn user-btn-primary">
-            <i class="fas fa-wallet"></i> Add Balance
-          </button>
-        </div>
-      {% endif %}
+      <label>Add To Balance</label>
+      <div class="form-control">{{ form.amount }}</div>
+      <button name="balance_submit" type="submit" class="btn-primary">
+        <i class="fas fa-wallet"></i> Add Balance
+      </button>
     </form>
 
-    {% if user.is_superuser %}
-    <div class="admin-back-to-home">
-      <a href="{% url 'home' %}" class="admin-btn admin-back-success">
-        <i class="fas fa-arrow-left"></i> Home
-      </a>
-    </div>
-    {% else %}
-    <div class="user-back-to-home">
-      <a href="{% url 'home' %}" class="user-btn user-back-success">
-        <i class="fas fa-arrow-left"></i> Home
-      </a>
-    </div>
+    <!-- Change/Set Password -->
+    {% if not user.is_superuser %}   
+        <section id="set-password">       
+          <div class="update-password">
+            {% if user.has_usable_password %}
+              <a href="{% url 'pass-manager' %}" class="btn-secondary">
+                <i class="fas fa-lock"></i> Change Password
+              </a>
+            {% else %}
+              <a href="{% url 'pass-manager' %}" class="btn-secondary">
+                <i class="fas fa-lock"></i> Set Password
+              </a>
+            {% endif %}
+          </div>
+        </section>  
+
+      <div class="back-to-home">
+        <a href="{% url 'home' %}" class="btn-link">
+          <i class="fas fa-arrow-left"></i> Home
+        </a>
+      </div>
     {% endif %}
 
   </div>
 </section>
+
+
+
 {% endblock %}

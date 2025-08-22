@@ -12,35 +12,161 @@ import io
 from xhtml2pdf import pisa
 from django.urls import reverse
 from .models import CustomUser, Car, Rental, Transaction, ContactMessage
-from .forms import CustomUserCreationForm, CustomUserLoginForm, AddBalanceForm, AdminCarForm, ProfileForm
+from .forms import CustomUserCreationForm, CustomUserLoginForm, AddBalanceForm, AdminCarForm, ProfileForm, CustomSetPasswordForm, CustomPasswordChangeForm
 from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
+from api.views import SendRentalConfirmationEmailView
+from rest_framework.test import APIRequestFactory
+from allauth.socialaccount.models import SocialAccount, SocialApp
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import update_session_auth_hash
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
+import requests
+from django.conf import settings
+import urllib.parse
+from django.http import FileResponse, Http404
+import os
+client_id = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
+secret = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret']
 
+
+
+@login_required
+def manage_password(request):
+    user = request.user
+
+    if not user.has_usable_password():
+        # Case 1: User logged in with Google, means having no password through which he can login without Gmail-acc.
+        if request.method == "POST":
+            try:
+                form = CustomSetPasswordForm(user, request.POST)
+                if form.is_valid():
+                    form.save()
+                    update_session_auth_hash(request, user)  
+                    messages.success(request, f'Your password has been set successfully.',extra_tags='pass-created')
+                    return redirect('home')
+            except :
+                messages.error(request,'We couldn’t set your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
+                return redirect('home') 
+        else:
+            form = CustomSetPasswordForm(user)
+    else:
+        # Case 2: User already has a password
+        if request.method == "POST":
+            try :    
+                form = CustomPasswordChangeForm(user, request.POST)
+                if form.is_valid():
+                    form.save()
+                    update_session_auth_hash(request, user)
+                    messages.success(request, f'Your password has been changed successfully.',extra_tags='pass-changed')
+                    return redirect('home')
+            except :
+                messages.error(request,'We couldn’t change your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
+                return redirect('home')     
+        else:
+            form = CustomPasswordChangeForm(user)
+
+    return render(request, "main_app/manage_password.html", {"form": form})
 
 def is_admin(user):
-    """Check if the user is an admin"""
     return user.is_superuser
 
 
 
-# Authentication Views
+
+@login_required
+def link_google(request):
+    base_url = "https://accounts.google.com/o/oauth2/v2/auth"
+    params = {
+        "client_id": client_id,
+        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
+        "response_type": "code",
+        "scope": "email profile",
+        "access_type": "offline",
+        "prompt": "consent",
+    }
+    return redirect(f"{base_url}?{urllib.parse.urlencode(params)}")
+
+@login_required
+def link_google_callback(request):
+    code = request.GET.get("code")
+    if not code:
+        messages.error(request, "Google linking failed. Please try again.",extra_tags='google-linked-failed')
+        return redirect("home")  
+
+    # Exchange auth code for access token
+    token_url = "https://oauth2.googleapis.com/token"
+    data = {
+        "code": code,
+        "client_id": client_id,
+        "client_secret": secret,
+        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
+        "grant_type": "authorization_code",
+    }
+    token_response = requests.post(token_url, data=data).json()
+    access_token = token_response.get("access_token")
+
+    # Fetch user's Google profile
+    userinfo_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    userinfo = requests.get(userinfo_url, headers=headers).json()
+
+    # Update the logged-in user's email
+    if userinfo.get("email"):
+        request.user.email = userinfo["email"]
+        request.user.save()
+        # creating the social account instance if it does not exist
+        from django.utils import timezone
+        if not SocialAccount.objects.filter(user=request.user, provider='google').exists():
+            SocialAccount.objects.create(
+                user=request.user,
+                provider='google',
+                uid=userinfo.get("id"),  # Google unique user ID
+                extra_data=userinfo,
+                date_joined=timezone.now()
+            )
+
+        messages.success(request, "Google account linked successfully!",extra_tags='google-linked')
+    else:
+        messages.error(request, "Failed to fetch Google email.",extra_tags='google-linked-failed')
+
+    return redirect("home")  # or your confirmation page
+
+
+
 def signup_view(request):
     """Handle user registration"""
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            login(request, user)
-            messages.success(request, f'Account created successfully. Welcome, {user.first_name}!',extra_tags='account-created')
+            try :    
+                user = form.save()
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+                messages.success(request, f'Account created, {user.username}. Link Google for quick login and verification.',extra_tags='account-created')
+                return redirect('home')
+            except :
+                messages.error(
+                    request,
+                    "We couldn’t complete your registration due to a system error. Please try again or contact support.",
+                    extra_tags='invalid-signup'
+                )
+                return redirect('home')
+
+        else:
+            messages.error(
+                request,
+                "Some details you entered are invalid. Please review the form and try again.",
+                extra_tags='invalid-signup'
+            )
             return redirect('home')
-    else:
+            
+    else: 
         form = CustomUserCreationForm()
     return render(request, 'main_app/signup.html', {'form': form})
-
-from django.utils.http import url_has_allowed_host_and_scheme
 
 def login_view(request):
     next_url = request.GET.get('next', '')
@@ -220,12 +346,13 @@ def home_view(request):
     
 
 @login_required
-
 def profile_view(request):
-    """User profile page"""
+    """User/admin profile page"""
     user = request.user
+    
     form = AddBalanceForm()
     profile_form = ProfileForm(instance=user)
+
     if request.method == 'POST':
         # Handling Add Balance Form
         if 'balance_submit' in request.POST:
@@ -246,16 +373,35 @@ def profile_view(request):
                 except ValueError as e:
                     messages.error(request, str(e))
 
-        # Handling Address Update Form
-        elif 'address_submit' in request.POST:
-            form = AddBalanceForm()  # Keep balance form intact
+        # Handling Profile Info Form
+        elif 'profile_info_submit' in request.POST:
+            form = AddBalanceForm()  
             profile_form = ProfileForm(request.POST, instance=user)
+
+            # Case 1: Completely empty form submitted
+            if not any(request.POST.get(field) for field in profile_form.fields):
+                messages.error(request, "Empty form submitted. Please fill in your profile information.", extra_tags="empty-profile")
+                return redirect('/profile/#profile-section')
+
+            # Case 2: Validation errors (spaces, required fields missing, etc.)
             if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, "Address updated successfully.", extra_tags='address-updated')
+                # Case 3: Check if any changes were made
+                if profile_form.has_changed():
+                    profile_form.save()
+                    messages.success(request, "Profile updated successfully.", extra_tags="profile-updated")
+                else:
+                    messages.warning(request, "No changes detected in your profile.", extra_tags="no-changes")
                 return redirect('/profile/#profile-section')
             else:
-                 messages.error(request, "Please fill out the address field.",extra_tags='address-empty') 
+                # Collect and flash all form errors gracefully
+                for field, errors in profile_form.errors.items():
+                    for error in errors:
+                        if field == '__all__':
+                            messages.error(request, error, extra_tags='error-message')  # non-field errors
+                        else:
+                            messages.error(request, f"{error}",extra_tags='error-message')
+                return redirect('/profile/#profile-section')
+
     else: 
         form = AddBalanceForm()
         profile_form = ProfileForm(instance=user)
@@ -267,33 +413,6 @@ def profile_view(request):
     }
     return render(request, 'main_app/profile.html', context)
 
-# def profile_view(request):
-   
-#     user = request.user
-#     if request.method == 'POST':  
-#             form = AddBalanceForm(request.POST)
-#             if form.is_valid():
-#                 amount = form.cleaned_data['amount']
-#                 try:
-#                     user.add_balance(amount)
-#                     Transaction.objects.create(
-#                         user=user,
-#                         amount=amount,
-#                         transaction_type='ADD',
-#                         description='Added to wallet'
-#                     )
-#                     messages.success(request, f'Rs {amount} added to your balance',extra_tags="amount-added-to-wallet")
-#                     return redirect('/profile/#profile-section')
-#                 except ValueError as e:
-#                     messages.error(request, str(e))
-#     else:
-#         form = AddBalanceForm()
-    
-#     context = {
-#         'user': user,
-#         'form': form
-#     }
-#     return render(request, 'main_app/profile.html', context)     
 
 def see_more_view(request,vehicle_type):
     Rental.check_returns()
@@ -320,10 +439,6 @@ def see_more_view(request,vehicle_type):
     return render(request, "main_app/all-cars.html", context)
 
     
-
-
-
-# THIS RENT CAR VIEW NEEDS TO BE CHANGED since now we are handling per hour rentals and starting day selection flexibility as well.
 @login_required
 def rent_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)
@@ -394,15 +509,30 @@ def rent_car(request, car_id):
             transaction_type='PAYMENT',
             description=f'Rented {car.name} for {integer_duration_days} day(s) and {rental_duration_minutes} minutes(s) .'
         )
-        if integer_duration_days!=0 and rental_duration_minutes!=0 :    
-                messages.success(request, f'You have successfully rented {car.name} for {integer_duration_days} day(s) and {rental_duration_minutes} minutes(s) .',extra_tags="rental-success-minutes-days")
-                return redirect(reverse('rental_history') + '#rental_history') 
-        elif integer_duration_days!=0 and rental_duration_minutes==0 : 
-            messages.success(request, f'You have successfully rented {car.name} for {integer_duration_days} day(s) .',extra_tags="rental-success-days")
-            return redirect(reverse('rental_history') + '#rental_history')
-        elif integer_duration_days==0 and rental_duration_minutes!=0 : 
-            messages.success(request, f'You have successfully rented {car.name} for {rental_duration_minutes} minutes(s) .',extra_tags="rental-success-minutes")
-            return redirect(reverse('rental_history') + '#rental_history')
+        factory = APIRequestFactory()
+        request_api = factory.post("/api/send-confirmation-email/", {
+            "user_id": user.id,
+            "car_name": car.name,
+            "rental_days": integer_duration_days,
+            "rental_minutes": rental_duration_minutes,
+            "total_cost": total_cost,
+        })
+        response = SendRentalConfirmationEmailView.as_view()(request_api)
+
+        if integer_duration_days and rental_duration_minutes:
+            rental_msg = f'You have successfully rented {car.name} for {integer_duration_days} day(s) and {rental_duration_minutes} minute(s).'
+        elif integer_duration_days:
+            rental_msg = f'You have successfully rented {car.name} for {integer_duration_days} day(s).'
+        else:
+            rental_msg = f'You have successfully rented {car.name} for {rental_duration_minutes} minute(s).'
+
+        messages.success(request, rental_msg, extra_tags="rental-success")
+        if response.status_code == 200:
+            messages.info(request, f'A confirmation email has been sent to {user.email}', extra_tags="email-info")
+        else:
+            messages.warning(request, 'Unable to send confirmation email at this time.', extra_tags="email-warning")
+
+        return redirect(reverse('rental_history') + '#rental_history')
         
     # below-- here is a safe fallback for non-POST requests like if the user directly visits the URL
     # or is the user refreshing the page without submitting the form
@@ -415,15 +545,17 @@ def car_detail_view(request, car_id):
         
         messages.error(request, "Please update your address so we can deliver rented cars to you!", extra_tags="address-required")
         return redirect(reverse('profile') + '#profile-section') 
-    else:
-        car = get_object_or_404(Car, id=car_id)
-        context = {
-            'car': car,
-            'total_rentals':car.rentals.count(),
-        }
-        return render(request, 'main_app/car_detail.html', context)
+    if (request.user.email == '' or not request.user.email ) :
+        messages.error(request, "Please link your Google account for confirmation emails.", extra_tags="email-required")
+        return redirect('home')
+    car = get_object_or_404(Car, id=car_id)
+    context = {
+        'car': car,
+        'total_rentals':car.rentals.count(),
+    }
+    return render(request, 'main_app/car_detail.html', context)
 
-# view to return a rented car if the rental period is not over
+# below is the view to return a rented car (e.g. user wants to return) before the rental period is over 
 # when the rental period is over, the car will be automatically returned
 @login_required
 def return_car(request, rental_id):
@@ -442,7 +574,6 @@ def return_car(request, rental_id):
     messages.success(request, f"You have successfully returned {rental.car.name}.",extra_tags="returned-by-user")
     return redirect(reverse('profile') + '#profile-section') 
 
-# User Account Views
 
 
 @login_required
@@ -485,11 +616,7 @@ def services_view(request):
 
 
 
-# Till here we had views--  for the normal users and for checking the admin 
- 
 
-
-# NOW FOR PDF GENERATION
 def render_to_pdf(template_src, context_dict):
     """Helper function to generate PDF from HTML template"""
     # render_to_string : A Django shortcut that loads a template and renders it as a plain string (HTML string).
@@ -501,13 +628,6 @@ def render_to_pdf(template_src, context_dict):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return HttpResponse('Error generating PDF', status=400)
-
-
-
-
-
-# Now, below are the views for the admins
-
 
 @login_required
 @user_passes_test(is_admin)
@@ -640,9 +760,6 @@ def admin_add_car(request):
         form = AdminCarForm()
     return render(request, 'main_app/admin/add_car.html', {'form': form})
 
-from django.http import FileResponse, Http404
-import os
-from django.conf import settings
 
 def car_image(request, filename):
     filepath = os.path.join(settings.MEDIA_ROOT, 'car_images', filename)
@@ -654,7 +771,7 @@ def car_image(request, filename):
 
 @login_required
 @user_passes_test(is_admin)
-def admin_remove_cars(request):   #
+def admin_remove_cars(request):   
     if request.method == 'POST':
         car_ids = request.POST.getlist('car_ids')
         deleted_count = 0

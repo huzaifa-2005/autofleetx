@@ -66,15 +66,16 @@
 
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu">
+          <a href="{% url 'home' %}">Home</a>
           {% if user.is_authenticated %}
             {% if user.is_superuser %}
               <a href="{% url 'profile' %}#profile-section">
                 <i class="fas fa-user-shield"></i> Admin Profile
-              </a>
+              </a>  
               <a href="{% url 'admin_dashboard' %}#admin-dashboard-section">
                 <i class="fas fa-sliders-h"></i> Admin Dashboard
               </a>
-              <a href="{% url 'admin:index' %}">📈 Admin Panel</a>
+              <a href="{% url 'admin:index' %}"><i class="fa-solid fa-gauge"></i> Admin Panel</a>
             {% else %}
               <a href="{% url 'profile' %}#profile-section">👤︎ User Profile</a>
               <a href="{% url 'rental_history' %}#rental_history">
@@ -96,7 +97,7 @@
             </a>
             <a href="{% url 'login' %}">Login</a>
           {% endif %}
-          <a href="{% url 'home' %}">Home</a>
+          
         </div>
 
         <!-- CENTERED OVERLAY TEXT -->

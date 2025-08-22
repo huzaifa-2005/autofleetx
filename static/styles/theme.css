@@ -87,7 +87,7 @@ body {
 
 /* Close Button with Hover Effect */
 .alert-close {
-  margin-left: 30px;
+  
   cursor: pointer;
   background: none;
   border: none;
@@ -99,7 +99,8 @@ body {
 
 .alert-close:hover {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.4);
+  color: #009900;
 }
 
 .fleet-section {
@@ -674,7 +675,7 @@ body {
 .newsletter-form {
   display: flex;
   margin-top: 15px;
-  border-radius: 25px;
+  border-radius: 14px;
   overflow: hidden;
 }
 
@@ -998,6 +999,10 @@ body {
   .newsletter-form button {
     border-radius: 0 0 12px 12px;
   }
+  .footer-section h3 {
+  margin-top: 10px;
+  
+}
 }
 
 

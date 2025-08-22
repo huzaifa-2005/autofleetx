@@ -20,6 +20,7 @@ class TimeStampedModel(models.Model):
 
 #  Custom User 
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True, blank=True, null=True)
     balance = models.DecimalField(
         max_digits=10, 
         decimal_places=2, 
@@ -40,6 +41,11 @@ class CustomUser(AbstractUser):
 
     def has_sufficient_balance(self, amount):
         return self.balance >= amount
+    def save(self, *args, **kwargs):
+        
+        if self.email == '':
+            self.email = None
+        super().save(*args, **kwargs) 
 
 #  Car Model 
 class Car(models.Model):

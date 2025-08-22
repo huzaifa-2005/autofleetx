@@ -186,6 +186,11 @@ select:focus,
 }
 
 @media (max-width: 768px) {
+
+
+  .main-content {
+  padding-top: 0px;
+  }
   .form-section {
     width: 95%;
     padding: 16px;

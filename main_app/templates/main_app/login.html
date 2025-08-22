@@ -45,7 +45,7 @@
         {{ message }}
       </div>
       {% endfor %} {% endif %}
-
+      
       <form method="POST">
         {% csrf_token %} {{ form.as_p }}
 
@@ -57,9 +57,9 @@
         </div>
         <hr />
         <div class="login-with-google">
-          <p class="login-divider">Or login with:</p>
+          <p class="login-divider">OR </p>
           <a href="{% provider_login_url 'google' %}">
-            <button class="google-btn" type="button">Login with Google</button>
+            <button class="google-btn" type="button">Sign in with Google</button>
           </a>
         </div>
       </form>
@@ -128,5 +128,49 @@
     `;
       document.head.appendChild(style);
     </script>
+    <script>
+        // Wait until DOM is ready
+        document.addEventListener("DOMContentLoaded", function () {
+            const passwordField = document.querySelector('input[type="password"]');
+            if (!passwordField) return;
+
+            // Create wrapper
+            const wrapper = document.createElement("div");
+            wrapper.style.position = "relative";
+            wrapper.style.display = "inline-block";
+            wrapper.style.width = "100%";
+
+            // Insert wrapper before password field and move password field inside
+            passwordField.parentNode.insertBefore(wrapper, passwordField);
+            wrapper.appendChild(passwordField);
+
+            // Create eye icon
+            const eyeIcon = document.createElement("i");
+            eyeIcon.className = "fas fa-eye-slash"; // Font Awesome
+            eyeIcon.style.position = "absolute";
+            eyeIcon.style.right = "10px";
+            eyeIcon.style.top = "50%";
+            eyeIcon.style.transform = "translateY(-50%)";
+            eyeIcon.style.cursor = "pointer";
+            eyeIcon.style.color = "gray";
+
+            // Add icon to wrapper
+            wrapper.appendChild(eyeIcon);
+
+            // Toggle logic
+            eyeIcon.addEventListener("click", function () {
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    eyeIcon.classList.remove("fa-eye-slash");
+                    eyeIcon.classList.add("fa-eye");
+                } else {
+                    passwordField.type = "password";
+                    eyeIcon.classList.remove("fa-eye");
+                    eyeIcon.classList.add("fa-eye-slash");
+                }
+            });
+        });
+    </script>
+
   </body>
 </html>
