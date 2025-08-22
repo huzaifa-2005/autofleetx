@@ -190,7 +190,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
    🔹User Rental History  
 </p>
-<img src="static\screenshots\rental-history.png" height=690px width=550px >
+<img src="static\screenshots\rental-history.png" height=990px width=550px >
 </td> 
 <td width="50%">
 <br>
