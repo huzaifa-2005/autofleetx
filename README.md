@@ -1,6 +1,6 @@
 # 🚗 AutoFleetX
 
-AutoFleetX is a **Django-based car rental web application** with a modern **HTML/CSS frontend** and a robust **PostgreSQL backend** connected via Django’s ORM.  
+AutoFleetX is a **Django-based car rental web application** with a modern **HTML/CSS frontend** and a robust **PostgreSQL backend** connected via Django’s ORM.
 It offers **real-time car rental management**, **secure authentication (Google login via Django Allauth)**, and a **mobile-responsive user interface**.
 
 ---
@@ -8,104 +8,158 @@ It offers **real-time car rental management**, **secure authentication (Google l
 ## ✨ Features
 
 ### 🔐 Authentication & User Management
-- Local account signup/login with **custom user model**.
-- **Google Login integration** using `django-allauth`.
-- Existing local users can **link their Google accounts** after login.
-- Password management with **secure password reset & change flows**.
+
+* Local account signup/login with **custom user model**.
+* **Google Login integration** using `django-allauth`.
+* Existing local users can **link their Google accounts** after login.
+* Password management with **secure password reset & change flows**.
 
 ### 🚘 Car Rental System
-- Browse, search, and filter cars by brand, type, rent/day, or seating capacity.
-- **Availability tracking**: Only available cars can be rented.
-- **One active rental per user** (backend-validated).
-- **Wallet system**: Users can add balance and pay directly from their account.
-- Automatic rental completion & early return handling.
+
+* Browse, search, and filter cars by brand, type, rent/day, or seating capacity.
+* **Availability tracking**: Only available cars can be rented.
+* **One active rental per user** (backend-validated).
+* **Wallet system**: Users can add balance and pay directly from their account.
+* Automatic rental completion & early return handling.
 
 ### 📩 Email & Notifications
-- REST API endpoint for **rental confirmation emails**.
-- Success/warning/error messages with user-friendly feedback.
-- Email linking required to ensure reliable confirmation emails.
+
+* REST API endpoint for **rental confirmation emails**.
+* Success/warning/error messages with user-friendly feedback.
+* Email linking required to ensure reliable confirmation emails.
 
 ### 👨‍💼 Admin Dashboard
-- Add, edit, or remove cars.
-- Generate **PDF reports** for:
-  - Customer rentals & spending.
-  - Currently reserved cars.
-- View and manage contact messages from users.
-- Overview dashboard: total cars, users, and active rentals.
+
+* Add, edit, or remove cars.
+* Generate **PDF reports** for:
+
+  * Customer rentals & spending.
+  * Currently reserved cars.
+* View and manage contact messages from users.
+* Overview dashboard: total cars, users, and active rentals.
 
 ### 💻 Frontend
-- Beautiful, **fully responsive UI** built with HTML & CSS.
-- Pagination for car listings (9 cars per page).
-- Sidebar navigation for user profiles.
-- Smooth and modern layout optimized for desktop & mobile.
+
+* Beautiful, **fully responsive UI** built with HTML & CSS.
+* Pagination for car listings (9 cars per page).
+* Sidebar navigation for user profiles.
+* Smooth and modern layout optimized for desktop & mobile.
 
 ### 🛡️ Robust Error Handling
-- Graceful validation with detailed error messages.
-- Edge case handling for rentals, forms, and authentication.
-- Safe redirects and secure session management.
+
+* Graceful validation with detailed error messages.
+* Edge case handling for rentals, forms, and authentication.
+* Safe redirects and secure session management.
 
 ---
 
 ## 🏗️ Tech Stack
 
-- **Backend:** [Django](https://www.djangoproject.com/) (Python)
-- **Frontend:** HTML5, CSS3
-- **Database:** PostgreSQL with Django ORM
-- **Authentication:** Django Allauth (Google OAuth 2.0)
-- **Email & APIs:** Django REST Framework
-- **PDF Generation:** `xhtml2pdf`
+* **Backend:** [Django](https://www.djangoproject.com/) (Python)
+* **Frontend:** HTML5, CSS3
+* **Database:** PostgreSQL with Django ORM
+* **Authentication:** Django Allauth (Google OAuth 2.0)
+* **Email & APIs:** Django REST Framework
+* **PDF Generation:** `xhtml2pdf`
 
 ---
 
 ## 📂 Project Structure
 
+```bash
+AutoFleetX/
+├── api/                # API app (REST endpoints)
+├── Cac_RemixSystem/    # Django project config
+├── main_app/           # Main business logic app
+├── media/              # User-uploaded files
+├── static/             # Static assets (CSS, JS, images)
+├── templates/          # Shared HTML templates
+├── venv/               # Virtual environment
+├── .env                # Environment variables
+├── .gitignore
+├── build.sh
+├── manage.py
+├── Procfile
+├── railway.json
+├── README.md
+└── requirements.txt
+```
 
+---
 
+## 🔑 Key Highlights: REST API & Google OAuth
 
+* **RESTful Email Notifications**:
+  The system uses **Django REST Framework** to expose API endpoints for sending **confirmation emails** after successful car rentals.
+  This ensures clean separation between frontend and backend, making email communication **scalable and maintainable**.
 
+* **Advanced Google OAuth Integration**:
+  Integrated using **`django-allauth`**, AutoFleetX supports:
+
+  * **Sign in with Google** directly.
+  * **Linking local accounts** with verified Google accounts post-authentication.
+  * Smooth fallback between local login and Google OAuth.
+
+This combination provides **flexibility, enhanced security, and a professional-grade authentication system**.
 
 ---
 
 ## 🚀 Getting Started
 
+**1. Clone the Repository**
+
 ```bash
-1. Clone the Repository
 git clone https://github.com/your-username/AutoFleetX.git
 cd AutoFleetX
+```
 
-2. Create a Virtual Environment
+**2. Create a Virtual Environment**
+
+```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
+```
 
-3. Install Dependencies
+**3. Install Dependencies**
+
+```bash
 pip install -r requirements.txt
+```
 
-4. Database Setup
-Update your PostgreSQL credentials in settings.py, then run:
+**4. Database Setup**
+Update your PostgreSQL credentials in `settings.py`, then run:
 
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
-5. Create a Superuser
+**5. Create a Superuser**
+
+```bash
 python manage.py createsuperuser
+```
 
-6. Run the Server
+**6. Run the Server**
+
+```bash
 python manage.py runserver
+```
 
+Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 
-Visit http://127.0.0.1:8000/
- in your browser.
-```  
-🧑‍💻 Usage
+---
 
-Users: Sign up or log in with Google, browse cars, rent, and manage their rentals & wallet.
+## 🧑‍💻 Usage
 
-Admins: Manage cars, view reports, and oversee the entire rental system.
+* **Users**: Sign up or log in with Google, browse cars, rent, and manage their rentals & wallet.
+* **Admins**: Manage cars, view reports, and oversee the entire rental system.
+* **Email Confirmations**: Automatic confirmation email sent upon rental success.
 
-Email Confirmations: Automatic confirmation email sent upon rental success.
+---
 
-📸 Screenshots
+## 📸 Screenshots
 
 ### App Preview :
 
@@ -122,27 +176,72 @@ Email Confirmations: Automatic confirmation email sent upon rental success.
 <td width="50%">
 <br>
 <p align="center">
- 
+ 🔹Browse Cars
+</p>
+<img src="static\screenshots\browse-cars.png" height=690px width=550px >  
+</td>
+</table>
 
+<table width="100%"> 
+<tr>
+<td width="50%">      
+&nbsp; 
+<br>
+<p align="center">
+   🔹User Rental History  
+</p>
+<img src="static\screenshots\rental-history.png" height=690px width=550px >
+</td> 
+<td width="50%">
+<br>
+<p align="center">
+ 🔹Admin Interface
+</p>
+<img src="static\screenshots\admin-browse.png" height=690px width=550px >  
+</td>
+</table>
 
-🔑 Key Highlights
+<table width="100%"> 
+<tr>
+<td width="50%">      
+&nbsp; 
+<br>
+<p align="center">
+   🔹Admin Dashboard  
+</p>
+<img src="static\screenshots\admin-dash.png" height=880px width=550px >
+</td> 
+<td width="50%">
+<br>
+<p align="center">
+ 🔹Confirmation Email
+</p>
+<img src="static\screenshots\email.png" height=520px width=550px >  
+</td>
+</table>
+
+---
+
+## 🔑 Summary
 
 ✅ Mobile responsive UI.
-
 ✅ Secure Google OAuth integration.
-
 ✅ Real-time rental availability management.
-
 ✅ PDF-based reporting for admins.
-
 ✅ REST API powered confirmation emails.
 
-🤝 Contributing
+---
+
+## 🤝 Contributing
 
 Contributions are welcome! Feel free to fork the repo and submit pull requests.
 
-📜 License
+---
+
+## 📜 License
 
 This project is licensed under the MIT License.
+
+---
 
 
