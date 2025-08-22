@@ -190,14 +190,14 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
    🔹User Rental History  
 </p>
-<img src="static\screenshots\rental-history.png" height=990px width=550px >
+<img src="static\screenshots\rental-history.png" height=1200px width=550px >
 </td> 
 <td width="50%">
 <br>
 <p align="center">
  🔹Admin Interface
 </p>
-<img src="static\screenshots\admin-browse.png" height=690px width=550px >  
+<img src="static\screenshots\admin-browse.png" height=490px width=550px >  
 </td>
 </table>
 
@@ -209,14 +209,14 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 <p align="center">
    🔹Admin Dashboard  
 </p>
-<img src="static\screenshots\admin-dash.png" height=880px width=550px >
+<img src="static\screenshots\admin-dash.png" height=1000px width=550px >
 </td> 
 <td width="50%">
 <br>
 <p align="center">
  🔹Confirmation Email
 </p>
-<img src="static\screenshots\email.png" height=520px width=550px >  
+<img src="static\screenshots\email.png" height=420px width=550px >  
 </td>
 </table>
 
