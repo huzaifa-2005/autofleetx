@@ -42,6 +42,7 @@
         <thead>
             <tr>
                 <th>Username</th>
+                <th>Email</th>
                 <th>Full Name</th>
                 <th>Active Rental</th>
                 <th>Completed Rentals</th>
@@ -52,6 +53,7 @@
             {% for item in user_data %}
             <tr>
                 <td>{{ item.user.username }}</td>
+                <td style="word-break: break-word; white-space: normal; max-width: 200px; font-size: 7px;  " >{{ item.user.email }}</td>
                 <td>{{ item.user.first_name }} {{ item.user.last_name }}</td>
                 <td>{{ item.active_rentals|length }}</td>
                 <td>{{ item.past_rentals|length }}</td>

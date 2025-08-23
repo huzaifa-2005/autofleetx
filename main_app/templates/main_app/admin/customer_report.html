@@ -27,6 +27,7 @@
                     <tr>
                         <th>Username</th>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Completed Rentals</th>
                         <th>Total Spent (Till Last Rental)</th>
                         <th>Current Rental</th>
@@ -37,6 +38,7 @@
                     <tr>
                         <td data-label="Username">{{ customer.username }}</td>
                         <td data-label="Name">{{ customer.full_name }}</td>
+                        <td data-label="Email">{{ customer.email }}</td>
                         <td data-label="Completed Rentals">{{ customer.completed_rentals }}</td>
                         <td data-label="Total Spent">${{ customer.total_spent }}</td>
                         <td data-label="Current Rental">

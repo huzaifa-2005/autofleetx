@@ -1,4 +1,3 @@
-# main_app/adapters.py
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
@@ -43,14 +42,7 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
         # This will create a SocialAccount entry linked to existing user
         sociallogin.connect(request, existing)
 
-        # Optionally, you can also update local user's fields from social data:
-        # if not existing.first_name:
-        #     existing.first_name = sociallogin.account.extra_data.get('given_name', '') or existing.first_name
-        # if not existing.last_name:
-        #     existing.last_name = sociallogin.account.extra_data.get('family_name', '') or existing.last_name
-        # existing.save()
-
-        # Immediately return a redirect response so allauth doesn't continue to signup form.
+        # Immediately returning a redirect response so allauth doesn't continue to signup form.
         # Redirect target: LOGIN_REDIRECT_URL or home
         redirect_to = getattr(settings, "LOGIN_REDIRECT_URL", "/")
         raise ImmediateHttpResponse(redirect(redirect_to))

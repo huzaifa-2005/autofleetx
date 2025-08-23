@@ -27,7 +27,7 @@ class SendRentalConfirmationEmailView(APIView):
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Prepare HTML email content
+        # Preparing HTML email content
         subject = "Car Rental Confirmation"
         from_email = settings.DEFAULT_FROM_EMAIL
         if not user.email:

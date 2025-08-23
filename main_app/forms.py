@@ -6,26 +6,20 @@ from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 
 # Case 1: user has no password (Google login)
 class CustomSetPasswordForm(SetPasswordForm):
-    # Inherits from Django's built-in SetPasswordForm
-    # Fields: new_password1, new_password2
     pass
 
 # Case 2: user has a password
 class CustomPasswordChangeForm(PasswordChangeForm):
-    # Inherits from Django's built-in PasswordChangeForm
-    # Fields: old_password, new_password1, new_password2
     pass
 
 
-class AdminCarForm(forms.ModelForm): # for admin_add_car view
+class AdminCarForm(forms.ModelForm): # for admin adding car
     class Meta:
         
         model = Car
         fields = ['name', 'brand', 'seating_capacity', 'rent_per_day','model_year','image'
                   ,'vehicle_type','accident_history']
         
-        # fields defines the model's fields to be included in the form.
-        # exclude defines the model's fields to be excluded from the form.
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['image'].required = False
@@ -34,13 +28,10 @@ class AdminCarForm(forms.ModelForm): # for admin_add_car view
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
-   
     address = forms.CharField(widget=forms.Textarea, required=False)
-
     class Meta:
         model = CustomUser
         fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'address')
-    
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if CustomUser.objects.filter(email=email).exists():
@@ -49,15 +40,13 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        #  Remove password help texts
+        #  Removing password help texts
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = ''
     
 class CustomUserLoginForm(forms.Form):   # for login_view
     username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)  # to make password field hidden
-
-
+    password = forms.CharField(widget=forms.PasswordInput)  
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -91,7 +80,6 @@ class ProfileForm(forms.ModelForm):
         self.fields['balance'].disabled = True
 
 
-        
 class AddBalanceForm(forms.Form):  # for profile_view (when user wants to add balance)
     amount = forms.DecimalField(
         max_digits=10, 

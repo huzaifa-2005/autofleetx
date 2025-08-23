@@ -34,168 +34,8 @@ secret = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret']
 
 
 
-@login_required
-def manage_password(request):
-    user = request.user
-
-    if not user.has_usable_password():
-        # Case 1: User logged in with Google, means having no password through which he can login without Gmail-acc.
-        if request.method == "POST":
-            try:
-                form = CustomSetPasswordForm(user, request.POST)
-                if form.is_valid():
-                    form.save()
-                    update_session_auth_hash(request, user)  
-                    messages.success(request, f'Your password has been set successfully.',extra_tags='pass-created')
-                    return redirect('home')
-            except :
-                messages.error(request,'We couldn’t set your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
-                return redirect('home') 
-        else:
-            form = CustomSetPasswordForm(user)
-    else:
-        # Case 2: User already has a password
-        if request.method == "POST":
-            try :    
-                form = CustomPasswordChangeForm(user, request.POST)
-                if form.is_valid():
-                    form.save()
-                    update_session_auth_hash(request, user)
-                    messages.success(request, f'Your password has been changed successfully.',extra_tags='pass-changed')
-                    return redirect('home')
-            except :
-                messages.error(request,'We couldn’t change your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
-                return redirect('home')     
-        else:
-            form = CustomPasswordChangeForm(user)
-
-    return render(request, "main_app/manage_password.html", {"form": form})
-
-def is_admin(user):
-    return user.is_superuser
 
 
-
-
-@login_required
-def link_google(request):
-    base_url = "https://accounts.google.com/o/oauth2/v2/auth"
-    params = {
-        "client_id": client_id,
-        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
-        "response_type": "code",
-        "scope": "email profile",
-        "access_type": "offline",
-        "prompt": "consent",
-    }
-    return redirect(f"{base_url}?{urllib.parse.urlencode(params)}")
-
-@login_required
-def link_google_callback(request):
-    code = request.GET.get("code")
-    if not code:
-        messages.error(request, "Google linking failed. Please try again.",extra_tags='google-linked-failed')
-        return redirect("home")  
-
-    # Exchange auth code for access token
-    token_url = "https://oauth2.googleapis.com/token"
-    data = {
-        "code": code,
-        "client_id": client_id,
-        "client_secret": secret,
-        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
-        "grant_type": "authorization_code",
-    }
-    token_response = requests.post(token_url, data=data).json()
-    access_token = token_response.get("access_token")
-
-    # Fetch user's Google profile
-    userinfo_url = "https://www.googleapis.com/oauth2/v2/userinfo"
-    headers = {"Authorization": f"Bearer {access_token}"}
-    userinfo = requests.get(userinfo_url, headers=headers).json()
-
-    # Update the logged-in user's email
-    if userinfo.get("email"):
-        request.user.email = userinfo["email"]
-        request.user.save()
-        # creating the social account instance if it does not exist
-        from django.utils import timezone
-        if not SocialAccount.objects.filter(user=request.user, provider='google').exists():
-            SocialAccount.objects.create(
-                user=request.user,
-                provider='google',
-                uid=userinfo.get("id"),  # Google unique user ID
-                extra_data=userinfo,
-                date_joined=timezone.now()
-            )
-
-        messages.success(request, "Google account linked successfully!",extra_tags='google-linked')
-    else:
-        messages.error(request, "Failed to fetch Google email.",extra_tags='google-linked-failed')
-
-    return redirect("home")  # or your confirmation page
-
-
-
-def signup_view(request):
-    """Handle user registration"""
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            try :    
-                user = form.save()
-                user.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, user)
-                messages.success(request, f'Account created, {user.username}. Link Google for quick login and verification.',extra_tags='account-created')
-                return redirect('home')
-            except :
-                messages.error(
-                    request,
-                    "We couldn’t complete your registration due to a system error. Please try again or contact support.",
-                    extra_tags='invalid-signup'
-                )
-                return redirect('home')
-
-        else:
-            messages.error(
-                request,
-                "Some details you entered are invalid. Please review the form and try again.",
-                extra_tags='invalid-signup'
-            )
-            return redirect('home')
-            
-    else: 
-        form = CustomUserCreationForm()
-    return render(request, 'main_app/signup.html', {'form': form})
-
-def login_view(request):
-    next_url = request.GET.get('next', '')
-    form = CustomUserLoginForm(request.POST or None)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                
-                # Safely redirect to next_url if present
-                if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
-                    return redirect(next_url)
-                return redirect('home')
-            else:
-                messages.error(request, 'Invalid username or password', extra_tags='invalid-credentials')
-    
-    return render(request, 'main_app/login.html', {'form': form})
-
-@login_required
-def logout_view(request):
-    """Handle user logout via POST"""
-    if request.method == 'POST':
-        logout(request)
-        messages.info(request, 'You have been logged out.', extra_tags="auth")
-    return redirect('login')
 
 def all_cars_view(request, scroll_to_section=0):
 
@@ -338,12 +178,219 @@ def car_list_view(request, page=1, scroll_to_section=False):
     }
     return render(request, 'main_app/all-cars.html', context)
 
-
-
 def home_view(request):
     Rental.check_returns()
     return render(request, 'main_app/home.html')
+
+def is_admin(user):
+    return user.is_superuser
+
+def signup_view(request):
+    """Handle user registration"""
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            try :    
+                user = form.save()
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+                messages.success(request, f'Account created, {user.username}. Link Google for quick login and verification.',extra_tags='account-created')
+                return redirect('home')
+            except :
+                messages.error(
+                    request,
+                    "We couldn’t complete your registration due to a system error. Please try again or contact support.",
+                    extra_tags='invalid-signup'
+                )
+                return redirect('home')
+
+        else:
+            messages.error(
+                request,
+                "Some details you entered are invalid. Please review the form and try again.",
+                extra_tags='invalid-signup'
+            )
+            return redirect('home')
+            
+    else: 
+        form = CustomUserCreationForm()
+    return render(request, 'main_app/signup.html', {'form': form})
+
+def login_view(request):
+    next_url = request.GET.get('next', '')
+    form = CustomUserLoginForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                
+                # Safely redirect to next_url if present
+                if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                    return redirect(next_url)
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid username or password', extra_tags='invalid-credentials')
     
+    return render(request, 'main_app/login.html', {'form': form})
+
+def see_more_view(request,vehicle_type):
+    Rental.check_returns()
+    
+    vehicle_type = vehicle_type.strip()
+    try:
+        cars = Car.objects.filter(vehicle_type=vehicle_type)
+        if not cars.exists():
+            messages.info(request, "No cars found matching your search criteria.",extra_tags="no-cars-found")
+            return redirect(reverse('home') + '#overview-fleets')
+    except Exception as e:
+        messages.error(request, f"Error while searching: {e}",extra_tags="search-error")
+        return redirect(reverse('home') + '#overview-fleets')
+
+    paginator = Paginator(cars, 9)
+    page_obj = paginator.get_page(1)
+
+    context = {
+        'page_obj': page_obj,
+        'total_pages': paginator.num_pages,
+        'scroll_to_section': True,
+        'current_page': 1
+    }
+    return render(request, "main_app/all-cars.html", context)
+
+def contact_us(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        if not name or not email or not message:
+            return render(request, 'main_app/contact_us.html', {
+                'error': "All fields are required."
+            })
+
+        # Save message
+        ContactMessage.objects.create(name=name, email=email, message=message)
+
+        # doing simple redirect with query param
+        messages.success(request, " Thank you for contacting us. We'll get back to you soon!",extra_tags="msg-sent")
+        return redirect(reverse('contact_us') + '?success=true#contact-form')
+    user = request.user
+    return render(request, 'main_app/contact_us.html',{ 'user':user })
+
+def services_view(request):
+    return render(request, 'main_app/services.html')
+
+
+
+
+@login_required
+def manage_password(request):
+    user = request.user
+
+    if not user.has_usable_password():
+        # Case 1: User logged in with Google, means having no password through which he can login without Gmail-acc.
+        if request.method == "POST":
+            try:
+                form = CustomSetPasswordForm(user, request.POST)
+                if form.is_valid():
+                    form.save()
+                    update_session_auth_hash(request, user)  
+                    messages.success(request, f'Your password has been set successfully.',extra_tags='pass-created')
+                    return redirect('home')
+            except :
+                messages.error(request,'We couldn’t set your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
+                return redirect('home') 
+        else:
+            form = CustomSetPasswordForm(user)
+    else:
+        # Case 2: User already has a password
+        if request.method == "POST":
+            try :    
+                form = CustomPasswordChangeForm(user, request.POST)
+                if form.is_valid():
+                    form.save()
+                    update_session_auth_hash(request, user)
+                    messages.success(request, f'Your password has been changed successfully.',extra_tags='pass-changed')
+                    return redirect('home')
+            except :
+                messages.error(request,'We couldn’t change your password due to a system error. Please try again or contact support.',extra_tags='password-setting-failed')   
+                return redirect('home')     
+        else:
+            form = CustomPasswordChangeForm(user)
+
+    return render(request, "main_app/manage_password.html", {"form": form})
+
+
+@login_required
+def link_google(request):
+    base_url = "https://accounts.google.com/o/oauth2/v2/auth"
+    params = {
+        "client_id": client_id,
+        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
+        "response_type": "code",
+        "scope": "email profile",
+        "access_type": "offline",
+        "prompt": "consent",
+    }
+    return redirect(f"{base_url}?{urllib.parse.urlencode(params)}")
+
+@login_required
+def link_google_callback(request):
+    code = request.GET.get("code")
+    if not code:
+        messages.error(request, "Google linking failed. Please try again.",extra_tags='google-linked-failed')
+        return redirect("home")  
+
+    # Exchange auth code for access token
+    token_url = "https://oauth2.googleapis.com/token"
+    data = {
+        "code": code,
+        "client_id": client_id,
+        "client_secret": secret,
+        "redirect_uri": request.build_absolute_uri('/link-google/callback/'),
+        "grant_type": "authorization_code",
+    }
+    token_response = requests.post(token_url, data=data).json()
+    access_token = token_response.get("access_token")
+
+    # Fetch user's Google profile
+    userinfo_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    userinfo = requests.get(userinfo_url, headers=headers).json()
+
+    # Update the logged-in user's email
+    if userinfo.get("email"):
+        request.user.email = userinfo["email"]
+        request.user.save()
+        # creating the social account instance if it does not exist
+        from django.utils import timezone
+        if not SocialAccount.objects.filter(user=request.user, provider='google').exists():
+            SocialAccount.objects.create(
+                user=request.user,
+                provider='google',
+                uid=userinfo.get("id"),  # Google unique user ID
+                extra_data=userinfo,
+                date_joined=timezone.now()
+            )
+
+        messages.success(request, "Google account linked successfully!",extra_tags='google-linked')
+    else:
+        messages.error(request, "Failed to fetch Google email.",extra_tags='google-linked-failed')
+
+    return redirect("home")  # or your confirmation page
+
+
+@login_required
+def logout_view(request):
+    """Handle user logout via POST"""
+    if request.method == 'POST':
+        logout(request)
+        messages.info(request, 'You have been logged out.', extra_tags="auth")
+    return redirect('login')
 
 @login_required
 def profile_view(request):
@@ -414,31 +461,7 @@ def profile_view(request):
     return render(request, 'main_app/profile.html', context)
 
 
-def see_more_view(request,vehicle_type):
-    Rental.check_returns()
-    
-    vehicle_type = vehicle_type.strip()
-    try:
-        cars = Car.objects.filter(vehicle_type=vehicle_type)
-        if not cars.exists():
-            messages.info(request, "No cars found matching your search criteria.",extra_tags="no-cars-found")
-            return redirect(reverse('home') + '#overview-fleets')
-    except Exception as e:
-        messages.error(request, f"Error while searching: {e}",extra_tags="search-error")
-        return redirect(reverse('home') + '#overview-fleets')
-
-    paginator = Paginator(cars, 9)
-    page_obj = paginator.get_page(1)
-
-    context = {
-        'page_obj': page_obj,
-        'total_pages': paginator.num_pages,
-        'scroll_to_section': True,
-        'current_page': 1
-    }
-    return render(request, "main_app/all-cars.html", context)
-
-    
+   
 @login_required
 def rent_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)
@@ -555,8 +578,7 @@ def car_detail_view(request, car_id):
     }
     return render(request, 'main_app/car_detail.html', context)
 
-# below is the view to return a rented car (e.g. user wants to return) before the rental period is over 
-# when the rental period is over, the car will be automatically returned
+
 @login_required
 def return_car(request, rental_id):
     rental = get_object_or_404(Rental, id=rental_id, user=request.user)
@@ -591,39 +613,10 @@ def transaction_history(request):
     return render(request, 'main_app/transaction_history.html', {'transactions': transactions})
 
 
-def contact_us(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-
-        if not name or not email or not message:
-            return render(request, 'main_app/contact_us.html', {
-                'error': "All fields are required."
-            })
-
-        # Save message
-        ContactMessage.objects.create(name=name, email=email, message=message)
-
-        # doing simple redirect with query param
-        messages.success(request, " Thank you for contacting us. We'll get back to you soon!",extra_tags="msg-sent")
-        return redirect(reverse('contact_us') + '?success=true#contact-form')
-    user = request.user
-    return render(request, 'main_app/contact_us.html',{ 'user':user })
-
-def services_view(request):
-    return render(request, 'main_app/services.html')
-
-
-
-
 def render_to_pdf(template_src, context_dict):
-    """Helper function to generate PDF from HTML template"""
-    # render_to_string : A Django shortcut that loads a template and renders it as a plain string (HTML string).
+    
     template = render_to_string(template_src, context_dict)
-    # io.BytesIO(): here below, initially you just instantiated a Python object that acts like a file in memory . It temporarily holds the PDF content.
     result = io.BytesIO()
-    # result: This will store the final binary PDF data.
     pdf = pisa.pisaDocument(io.BytesIO(template.encode("UTF-8")), result)
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
@@ -672,6 +665,7 @@ def admin_customer_report(request):
 
         customers_data.append({
             'username': user.username,
+            'email'   : user.email, 
             'full_name': f"{user.first_name} {user.last_name}",
             'total_rentals': total_rentals,
             'completed_rentals': completed_rentals.count(),
@@ -745,7 +739,7 @@ def admin_add_car(request):
         if form.is_valid():
             car = form.save(commit=False)
             car.added_by = request.user
-            # Save a readable version of name
+            # Saving a readable version of admin's name [who added the car]
             if request.user.first_name and request.user.last_name:
                 former_admin_name = f"Former Admin ({request.user.first_name} {request.user.last_name})".strip()
             else:
