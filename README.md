@@ -191,14 +191,14 @@ python manage.py runserver
 <p align="center">
    🔹User Rental History  
 </p>
-<img src="static\screenshots\rental-history.png" height=1950px width=550px >
+<img src="static\screenshots\rental-history.png" height=2650px width=550px >
 </td> 
 <td width="50%">
 <br>
 <p align="center">
  🔹Admin Interface
 </p>
-<img src="static\screenshots\adm-interface.png" height=620px width=550px >  
+<img src="static\screenshots\adm-interface.png" height=690px width=550px >  
 </td>
 </table>
 
