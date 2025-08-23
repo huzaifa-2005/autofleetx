@@ -23,9 +23,12 @@ class AdminCarForm(forms.ModelForm): # for admin_add_car view
         model = Car
         fields = ['name', 'brand', 'seating_capacity', 'rent_per_day','model_year','image'
                   ,'vehicle_type','accident_history']
+        
         # fields defines the model's fields to be included in the form.
         # exclude defines the model's fields to be excluded from the form.
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].required = False
 
 
 class CustomUserCreationForm(UserCreationForm):

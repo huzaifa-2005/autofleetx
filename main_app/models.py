@@ -55,7 +55,9 @@ class Car(models.Model):
     rent_per_day = models.PositiveIntegerField()
     model_year = models.PositiveIntegerField(null=True, blank=True)
     available = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='car_images/')
+    image = models.ImageField(upload_to='car_images/', blank=True, null=True)
+
+
     
     vehicle_type = models.CharField(
     max_length=20,
