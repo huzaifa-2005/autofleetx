@@ -110,11 +110,11 @@ This combination provides **flexibility, enhanced security, and a professional-g
 **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/your-username/AutoFleetX.git
+git clone https://github.com/huzaifa-2005/AutoFleetX.git
 cd AutoFleetX
 ```
 
-**2. Create a Virtual Environment**
+**2. Create and Activate Virtual Environment**
 
 ```bash
 python -m venv venv
@@ -148,14 +148,14 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
+
 
 ---
 
 ## 🧑‍💻 Usage
 
 * **Users**: Sign up or log in with Google, browse cars, rent, and manage their rentals & wallet.
-* **Admins**: Manage cars, view reports, and oversee the entire rental system.
+* **Admins**: Manage cars, view reports, track customers and rental records, and oversee the entire rental system.
 * **Email Confirmations**: Automatic confirmation email sent upon rental success.
 
 ---
@@ -225,12 +225,13 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser.
 
 ## 🔑 Summary
 
-✅ Mobile responsive UI.
-✅ Secure Google OAuth integration.
-✅ Real-time rental availability management.
-✅ PDF-based reporting for admins.
-✅ REST API powered confirmation emails.
-
+- ✅ Mobile responsive UI
+- ✅ Secure Google OAuth integration
+- ✅ A complex django powered backend with robust error handling 
+- ✅ Real-time rental availability management
+- ✅ PDF-based reporting for admins
+- ✅ REST API powered confirmation emails
+ 
 ---
 
 ## 🤝 Contributing
