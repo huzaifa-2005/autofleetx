@@ -198,7 +198,7 @@ python manage.py runserver
 <p align="center">
  🔹Admin Interface
 </p>
-<img src="static\screenshots\admin-browse.png" height=620px width=550px >  
+<img src="static\screenshots\adm-interface.png" height=620px width=550px >  
 </td>
 </table>
 
