@@ -77,7 +77,7 @@
       <img src="{% url 'car_image' car.image.name|cut:'car_images/' %}" class="car-img" alt="{{ car.name }}">
      {% else %}
       <img  
-        src="{% static 'images/default_car.png' %}"
+        src="{% static 'images/default.png' %}"
         alt="No image"
         class="car-img"
       />
