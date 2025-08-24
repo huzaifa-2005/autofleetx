@@ -43,6 +43,7 @@ class CustomUserCreationForm(UserCreationForm):
         #  Removing password help texts
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = ''
+        self.fields['username'].help_text = ''
     
 class CustomUserLoginForm(forms.Form):   # for login_view
     username = forms.CharField(max_length=150)
