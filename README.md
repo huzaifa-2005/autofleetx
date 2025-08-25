@@ -57,7 +57,7 @@ It offers **real-time car rental management**, **secure authentication (Google l
 ## 🏗️ Tech Stack
 
 * **Backend:** [Django](https://www.djangoproject.com/) (Python)
-* **Frontend:** HTML5, CSS3
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript
 * **Database:** PostgreSQL with Django ORM
 * **Authentication:** Django Allauth (Google OAuth 2.0)
 * **Email & APIs:** Django REST Framework
