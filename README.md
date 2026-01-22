@@ -1,6 +1,7 @@
 # 🚗 AutoFleetX
 
 ## LIVE DEMO : https://autofleetx-production-c144.up.railway.app/
+> ⚠️ **Note:** This live demo is hosted on a trial deployment and will expire **30 days after the initial deployment date**.
 AutoFleetX is a **Django-based car rental web application** with a modern **HTML/CSS frontend** and a robust **PostgreSQL backend** connected via Django’s ORM.
 It offers **real-time car rental management**, **secure authentication (Google login via Django Allauth)**, and a **mobile-responsive user interface**.
 
