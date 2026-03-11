@@ -143,7 +143,6 @@ if not DEBUG:
 #----CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'https://autofleetx-production-c144.up.railway.app',
-    'https://autofleetx.onrender.com',
 ]
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
