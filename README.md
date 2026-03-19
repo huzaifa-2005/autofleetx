@@ -1,4 +1,4 @@
-# 🚗 AutoFleetX
+#  AutoFleetX
 
 ## LIVE DEMO : https://autofleetx-production-c144.up.railway.app/
 > This live demo is hosted on a trial deployment and will expire **30 days after the initial deployment date**.
@@ -7,16 +7,16 @@ It offers **real-time car rental management**, **secure authentication (Google l
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🔐 Authentication & User Management
+###  Authentication & User Management
 
 * Local account signup/login with **custom user model**.
 * **Google Login integration** using `django-allauth`.
 * Existing local users can **link their Google accounts** after login.
 * Password management with **secure password reset & change flows**.
 
-### 🚘 Car Rental System
+###  Car Rental System
 
 * Browse, search, and filter cars by brand, type, rent/day, or seating capacity.
 * **Availability tracking**: Only available cars can be rented.
@@ -24,13 +24,13 @@ It offers **real-time car rental management**, **secure authentication (Google l
 * **Wallet system**: Users can add balance and pay directly from their account.
 * Automatic rental completion & early return handling.
 
-### 📩 Email & Notifications
+###  Email & Notifications
 
 * REST API endpoint for **rental confirmation emails**.
 * Success/warning/error messages with user-friendly feedback.
 * Email linking required to ensure reliable confirmation emails.
 
-### 👨‍💼 Admin Dashboard
+###  Admin Dashboard
 
 * Add, edit, or remove cars.
 * Generate **PDF reports** for:
@@ -40,14 +40,14 @@ It offers **real-time car rental management**, **secure authentication (Google l
 * View and manage contact messages from users.
 * Overview dashboard: total cars, users, and active rentals.
 
-### 💻 Frontend
+###  Frontend
 
 * Beautiful, **fully responsive UI** built with HTML & CSS.
 * Pagination for car listings (9 cars per page).
 * Sidebar navigation for user profiles.
 * Smooth and modern layout optimized for desktop & mobile.
 
-### 🛡️ Robust Error Handling
+###  Robust Error Handling
 
 * Graceful validation with detailed error messages.
 * Edge case handling for rentals, forms, and authentication.
@@ -55,7 +55,7 @@ It offers **real-time car rental management**, **secure authentication (Google l
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 * **Backend:** [Django](https://www.djangoproject.com/) (Python)
 * **Frontend:** HTML5, CSS3, Vanilla JavaScript
@@ -89,7 +89,7 @@ AutoFleetX/
 
 ---
 
-## 🔑 Key Highlights: REST API & Google OAuth
+##  Key Highlights: REST API & Google OAuth
 
 * **RESTful Email Notifications**:
   The system uses **Django REST Framework** to expose API endpoints for sending **confirmation emails** after successful car rentals.
@@ -153,7 +153,7 @@ python manage.py runserver
 
 ---
 
-## 🧑‍💻 Usage
+##  Usage
 
 * **Users**: Sign up or log in with Google, browse cars, rent, and manage their rentals & wallet.
 * **Admins**: Manage cars, view reports, track customers and rental records, and oversee the entire rental system.
@@ -161,7 +161,7 @@ python manage.py runserver
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 ### App Preview :
 
@@ -224,7 +224,7 @@ python manage.py runserver
 
 ---
 
-## 🔑 Summary
+##  Summary
 
 - ✅ Mobile responsive UI
 - ✅ Secure Google OAuth integration
@@ -235,13 +235,13 @@ python manage.py runserver
  
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Feel free to fork the repo and submit pull requests.
 
 ---
 
-## 📜 License
+##  License
 
 This project is licensed under the MIT License.
 
