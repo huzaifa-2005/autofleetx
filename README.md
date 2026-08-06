@@ -78,7 +78,6 @@ AutoFleetX/
 ├── build.sh
 ├── manage.py
 ├── Procfile
-├── railway.json
 ├── README.md
 └── requirements.txt
 ```
