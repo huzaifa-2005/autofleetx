@@ -654,21 +654,21 @@ def admin_dashboard(request):
 @login_required
 @user_passes_test(is_admin)
 def admin_customer_report(request):
-    users = CustomUser.objects.filter(is_superuser=False)
+    users = CustomUser.objects.filter(is_superuser=False).prefetch_related('rentals')
     customers_data = []
 
     for user in users:
-        total_rentals = Rental.objects.filter(user=user).count()
-        completed_rentals = Rental.objects.filter(user=user, is_active=False)
-        current_rental = Rental.objects.filter(user=user, is_active=True).first()
-        total_spent = sum(rental.total_cost for rental in completed_rentals)
+        total_rentals =  list(user.rentals.all())
+        completed_rentals = [r for r in total_rentals if not r.is_active]
+        current_rental = next((r for r in total_rentals if r.is_active), None)
+        total_spent = sum(r.total_cost for r in completed_rentals)
 
         customers_data.append({
             'username': user.username,
             'email'   : user.email, 
             'full_name': f"{user.first_name} {user.last_name}",
-            'total_rentals': total_rentals,
-            'completed_rentals': completed_rentals.count(),
+            'total_rentals': len(total_rentals),
+            'completed_rentals': len(completed_rentals),
             'total_spent': total_spent,
             'current_car': current_rental.car.name if current_rental else "No current rental"
         })
@@ -681,18 +681,19 @@ def admin_customer_report(request):
 @user_passes_test(is_admin)
 def pdf_customer_report(request):
     """Generate PDF customer report"""
-    users = CustomUser.objects.filter(is_superuser=False)
+    users = CustomUser.objects.filter(is_superuser=False).prefetch_related('rentals')
     user_data = []
     
     for user in users:
-        active_rentals = Rental.objects.filter(user=user, is_active=True)
-        past_rentals = Rental.objects.filter(user=user, is_active=False)
+        user_rentals = list(user.rentals.all())
+        active_rentals = [r for r in user_rentals if r.is_active]
+        past_rentals = [r for r in user_rentals if not r.is_active]
         
         user_data.append({
             'user': user,
             'active_rentals': active_rentals,
             'past_rentals': past_rentals,
-            'total_spent': sum(rental.total_cost for rental in past_rentals)
+            'total_spent': sum(r.total_cost for r in past_rentals)
         })
     
     context = {
