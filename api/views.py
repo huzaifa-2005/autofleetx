@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
 
+
 User = get_user_model()
 
 class SendRentalConfirmationEmailView(APIView):
@@ -47,7 +48,13 @@ class SendRentalConfirmationEmailView(APIView):
 
         email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
         email.attach_alternative(html_content, "text/html")
-        email.send()
+        try:
+            email.send()
+        except (SMTPException, SocketTimeout, OSError) as e:
+            return Response(
+                {"error": f"Email sending failed: {e}"},
+                status=status.HTTP_502_BAD_GATEWAY
+            )    
 
         return Response({"message": "Email sent successfully"}, status=status.HTTP_200_OK)
 
