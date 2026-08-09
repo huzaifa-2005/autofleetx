@@ -132,11 +132,17 @@ class Rental(TimeStampedModel):
     @classmethod
     def check_returns(cls):
         now = timezone.now()
-        completed_rentals = cls.objects.filter(end_datetime__lte=now, is_active=True)
+        completed_rentals = list(
+            cls.objects.filter(end_datetime__lte=now, is_active=True).select_related('car')
+        )
+        if not completed_rentals:
+            return
+
+        car_ids = [r.car_id for r in completed_rentals]
         for rental in completed_rentals:
             rental.is_active = False
-            rental.save()
-            rental.car.mark_available()
+        cls.objects.bulk_update(completed_rentals, ['is_active'])
+        Car.objects.filter(id__in=car_ids).update(available=True)
 
 #  Transaction Model 
 class Transaction(TimeStampedModel):

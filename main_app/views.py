@@ -566,7 +566,7 @@ def car_detail_view(request, car_id):
       
     if (request.user.address == '' or not request.user.address) and (not request.user.is_superuser):
         
-        messages.error(request, "Please update your address so we can deliver rented cars to you!", extra_tags="address-required")
+        messages.error(request, "Please update or enter your address!", extra_tags="address-required")
         return redirect(reverse('profile') + '#profile-section') 
     if (request.user.email == '' or not request.user.email ) :
         messages.error(request, "Please link your Google account for confirmation emails.", extra_tags="email-required")
@@ -716,13 +716,11 @@ def admin_reserved_cars_report(request):
 @user_passes_test(is_admin)
 def pdf_reserved_cars_report(request):
     """Generate PDF of currently reserved (active) cars"""
-    reserved_cars = Car.objects.filter(available=False)
-    active_reservations = []
 
-    for car in reserved_cars:
-        rental = Rental.objects.filter(car=car, is_active=True).select_related('user').first()
-        if rental:
-            active_reservations.append(rental)
+    active_reservations = list(
+    Rental.objects.filter(is_active=True, car__available=False)
+    .select_related('user', 'car')
+)
 
     context = {
         'active_reservations': active_reservations,
